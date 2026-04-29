@@ -1,3 +1,6 @@
+Planning dashboard · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 :root {
   --bg: #f5f4f0;
   --surface: #ffffff;
@@ -23,19 +26,34 @@
   --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.05);
 }
-
+ 
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
-
+ 
 /* ── Header ── */
 .header {
   background: var(--surface); border-bottom: 1px solid var(--border);
   padding: 0 24px; height: 56px; display: flex; align-items: center;
   justify-content: space-between; position: sticky; top: 0; z-index: 50;
+  gap: 12px;
 }
-.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .logo-dot { width: 8px; height: 8px; background: var(--text); border-radius: 50%; }
-.header-actions { display: flex; gap: 8px; }
-
+.header-center { flex: 1; max-width: 340px; }
+.search-wrap { position: relative; }
+.search-wrap input {
+  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 7px 12px 7px 32px; border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); background: var(--surface2);
+  color: var(--text); outline: none; transition: border-color 0.15s, background 0.15s;
+}
+.search-wrap input:focus { border-color: var(--text); background: var(--surface); }
+.search-wrap input::placeholder { color: var(--text3); }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text3); pointer-events: none; }
+.search-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text3); cursor: pointer; display: none; background: none; border: none; line-height: 1; }
+.search-wrap input:not(:placeholder-shown) ~ .search-clear { display: block; }
+ 
+.header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+ 
 /* ── Buttons ── */
 .btn {
   font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
@@ -48,194 +66,207 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .btn-danger { background: var(--red); color: #fff; border-color: var(--red); }
 .btn-danger:hover { background: #991b1b; }
 .btn-sm { padding: 5px 10px; font-size: 12px; }
-
+.btn-ghost { background: none; border-color: transparent; color: var(--text2); }
+.btn-ghost:hover { background: var(--surface2); border-color: var(--border); color: var(--text); }
+.btn-active { background: var(--text); color: #fff; border-color: var(--text); }
+ 
 /* ── Main ── */
 .main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-
-/* ── Top toolbar ── */
-.toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.toolbar-left { display: flex; align-items: center; gap: 12px; }
+ 
+/* ── Toolbar ── */
+.toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .page-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
-.stats-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .stat-chip { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
 .stat-chip span { color: var(--text); font-weight: 600; }
-
+ 
+/* ── Filter bar ── */
+.filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); }
+.filter-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2);
+  background: var(--surface); color: var(--text2); cursor: pointer; transition: all 0.12s;
+  display: flex; align-items: center; gap: 5px;
+}
+.filter-btn:hover { border-color: var(--text); color: var(--text); }
+.filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+.filter-btn .avatar-xs { width: 18px; height: 18px; border-radius: 50%; font-size: 9px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+ 
+/* ── Search highlight ── */
+.search-highlight { background: #fef08a; border-radius: 2px; color: var(--text); }
+.card-hidden { display: none !important; }
+ 
 /* ── Backlogs row ── */
-.backlogs-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-
-.backlog-col {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.backlog-col-header {
-  display: flex; align-items: center; gap: 6px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-}
-.backlog-col-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
-.backlog-col-name {
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.06em; color: var(--text2); flex: 1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.backlog-col-count {
-  font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px; padding: 1px 6px; color: var(--text3);
-}
+.backlogs-row { display: grid; gap: 12px; }
+.backlog-col { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.backlog-col-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+.backlog-col-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.backlog-col-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.backlog-col-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1px 6px; color: var(--text3); }
 .backlog-col-actions { display: none; gap: 2px; }
 .backlog-col-header:hover .backlog-col-actions { display: flex; }
-
-.backlog-col-cards {
-  display: flex; flex-direction: column; gap: 6px;
-  padding: 10px 10px; min-height: 70px; flex: 1;
-  transition: background 0.1s;
-}
-.backlog-col-cards.drag-over {
-  background: var(--surface2);
-  outline: 2px dashed var(--border2);
-  outline-offset: -3px;
-  border-radius: 0 0 var(--radius) var(--radius);
-}
+.backlog-col-cards { display: flex; flex-direction: column; gap: 6px; padding: 10px; min-height: 70px; flex: 1; transition: background 0.1s; }
+.backlog-col-cards.drag-over { background: var(--surface2); outline: 2px dashed var(--border2); outline-offset: -3px; border-radius: 0 0 var(--radius) var(--radius); }
 .backlog-empty { font-size: 12px; color: var(--text3); font-style: italic; padding: 4px 2px; }
-
+ 
+.add-backlog-col {
+  background: none; border: 2px dashed var(--border2); border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 0.12s, background 0.12s;
+  min-height: 80px; color: var(--text3); font-size: 13px; font-weight: 500; gap: 6px;
+}
+.add-backlog-col:hover { border-color: var(--text2); background: var(--surface); color: var(--text2); }
+ 
 /* ── Board ── */
 .board-wrap { overflow-x: auto; border-radius: var(--radius); }
-.board {
-  width: 100%; border-collapse: separate; border-spacing: 0;
-  min-width: 500px; background: var(--surface);
-  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-}
-
-thead th {
-  padding: 12px 14px; font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3);
-  background: var(--surface2); border-bottom: 1px solid var(--border);
-  text-align: left; white-space: nowrap;
-}
+.board { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 500px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+thead th { padding: 12px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); background: var(--surface2); border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
 thead th:first-child { border-right: 1px solid var(--border); min-width: 140px; position: sticky; left: 0; z-index: 5; background: var(--surface2); }
-thead th:not(:first-child) { min-width: 160px; }
-
+thead th:not(:first-child) { min-width: 170px; }
+ 
 .phase-header { display: flex; align-items: center; gap: 6px; }
 .phase-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .phase-count { margin-left: auto; font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; color: var(--text2); }
 .phase-actions { display: none; gap: 3px; margin-left: 2px; }
 th:hover .phase-actions { display: flex; }
-
+ 
 tbody tr { border-bottom: 1px solid var(--border); }
 tbody tr:last-child { border-bottom: none; }
+tbody tr.emp-hidden { display: none; }
 tbody td { padding: 10px 12px; vertical-align: top; border-right: 1px solid var(--border); }
 tbody td:last-child { border-right: none; }
 tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--surface); border-right: 1px solid var(--border); min-width: 140px; }
-
+ 
 .employee-cell { display: flex; align-items: center; gap: 9px; padding: 2px 0; }
 .avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
 .emp-name { font-size: 13px; font-weight: 500; flex: 1; }
 .emp-actions { display: none; gap: 2px; }
 .employee-cell:hover .emp-actions { display: flex; }
-
+ 
 .cell-inner { display: flex; flex-direction: column; gap: 5px; min-height: 52px; border-radius: var(--radius-sm); padding: 2px; transition: background 0.12s; }
 .cell-inner.drag-over { background: var(--surface2); outline: 2px dashed var(--border2); outline-offset: -2px; }
-
+ 
 /* ── Cards ── */
 .project-card {
-  border-radius: var(--radius-sm); padding: 7px 9px; font-size: 12px; font-weight: 500;
-  display: flex; align-items: flex-start; gap: 6px; border: 1px solid transparent;
-  cursor: grab; user-select: none;
+  border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px; font-weight: 500;
+  display: flex; flex-direction: column; gap: 5px;
+  border: 1px solid transparent; cursor: grab; user-select: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 0 rgba(0,0,0,0.04);
-  transition: box-shadow 0.12s, transform 0.12s, opacity 0.12s; line-height: 1.4;
+  transition: box-shadow 0.12s, transform 0.12s, opacity 0.12s;
 }
 .project-card:active { cursor: grabbing; }
 .project-card.dragging { opacity: 0.35; transform: scale(0.96); box-shadow: none; }
 .project-card:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.13); transform: translateY(-1px); }
+.card-top { display: flex; align-items: flex-start; gap: 6px; }
 .drag-handle { font-size: 11px; opacity: 0.3; margin-top: 1px; flex-shrink: 0; }
-.card-name { flex: 1; }
+.card-name { flex: 1; line-height: 1.4; }
 .del-btn { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; padding: 0; opacity: 0.4; color: inherit; flex-shrink: 0; }
 .project-card:hover .del-btn { visibility: visible; }
-
+ 
+.card-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 1px; }
+.card-label {
+  font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.card-deadline { font-size: 10px; font-family: 'DM Mono', monospace; opacity: 0.65; display: flex; align-items: center; gap: 3px; }
+.card-deadline.overdue { color: var(--red); opacity: 1; font-weight: 600; }
+ 
+/* label colors */
+.label-urgent    { background: #fee2e2; color: #991b1b; }
+.label-wacht     { background: #fef9c3; color: #854d0e; }
+.label-intern    { background: #e0e7ff; color: #3730a3; }
+.label-klant     { background: #dcfce7; color: #166534; }
+.label-review    { background: #fce7f3; color: #9d174d; }
+ 
 /* ── Icon buttons ── */
 .icon-btn { background: none; border: none; cursor: pointer; padding: 2px 3px; border-radius: 4px; line-height: 1; font-size: 12px; color: var(--text3); transition: background 0.1s, color 0.1s; }
 .icon-btn:hover { background: var(--border); color: var(--text); }
 .icon-btn.danger:hover { background: #fee2e2; color: var(--red); }
-
-/* ── Stats dashboard ── */
-.stats-section {
-  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-}
-.stats-header {
-  padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2);
-  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3);
-  display: flex; align-items: center; gap: 8px;
-}
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+ 
+/* ── Stats ── */
+.stats-section { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.stats-header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
 .stat-card { padding: 20px 24px; border-right: 1px solid var(--border); }
 .stat-card:last-child { border-right: none; }
 .stat-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); font-family: 'DM Mono', monospace; }
+.stat-value { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); font-family: 'DM Mono', monospace; }
 .stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
-
-.phase-breakdown { padding: 16px 20px; border-top: 1px solid var(--border); }
-.phase-breakdown-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 12px; }
-.phase-bars { display: flex; flex-direction: column; gap: 8px; }
-.phase-bar-row { display: flex; align-items: center; gap: 10px; }
-.phase-bar-label { font-size: 12px; font-weight: 500; color: var(--text2); width: 110px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.phase-bar-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
-.phase-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
-.phase-bar-num { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); width: 24px; text-align: right; flex-shrink: 0; }
-
+ 
 /* ── Loading ── */
 .loading-row td { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; }
 .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--text2); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
 /* ── Toast ── */
 .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: var(--radius-sm); opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; z-index: 200; pointer-events: none; }
 .toast.show { opacity: 1; transform: translateY(0); }
 .toast.error { background: var(--red); }
-
+ 
 /* ── Modal ── */
 .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.28); z-index: 100; align-items: center; justify-content: center; }
 .modal-backdrop.open { display: flex; }
-.modal { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; width: 320px; box-shadow: var(--shadow-md); }
+.modal { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; width: 340px; box-shadow: var(--shadow-md); }
 .modal h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; }
 .modal label { font-size: 12px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; }
-.modal input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); margin-bottom: 14px; outline: none; transition: border-color 0.1s; }
-.modal input:focus { border-color: var(--text); }
+.modal input, .modal select {
+  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px;
+  border: 1px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface);
+  color: var(--text); margin-bottom: 14px; outline: none; transition: border-color 0.1s;
+}
+.modal input:focus, .modal select:focus { border-color: var(--text); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
 .modal-warning { font-size: 12px; color: var(--text2); background: #fef9ec; border: 1px solid #f5e0a0; border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 14px; line-height: 1.5; }
+ 
+/* responsive grid for backlogs */
+@media (max-width: 700px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .stats-grid .stat-card:nth-child(2) { border-right: none; }
+  .stats-grid .stat-card:nth-child(3) { border-top: 1px solid var(--border); }
+}
 </style>
 </head>
 <body>
-
+ 
 <header class="header">
   <div class="logo"><div class="logo-dot"></div>Planning board</div>
+  <div class="header-center">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Zoek project…" oninput="applyFilters()" />
+      <button class="search-clear" onclick="clearSearch()">×</button>
+    </div>
+  </div>
   <div class="header-actions">
     <button class="btn btn-sm" onclick="openModal('employee')">+ Medewerker</button>
     <button class="btn btn-sm" onclick="openModal('phase')">+ Fase</button>
     <button class="btn btn-sm btn-dark" onclick="openModal('project')">+ Nieuw project</button>
   </div>
 </header>
-
+ 
 <main class="main">
   <div class="toolbar">
     <div class="toolbar-left">
       <h1 class="page-title">Projecten</h1>
-      <div class="stats-chips">
+      <div class="chips">
         <div class="stat-chip"><span id="chip-projects">–</span> projecten</div>
         <div class="stat-chip"><span id="chip-employees">–</span> medewerkers</div>
         <div class="stat-chip"><span id="chip-phases">–</span> fases</div>
       </div>
     </div>
   </div>
-
-  <!-- 3 backlogs naast elkaar -->
+ 
+  <!-- Medewerker filter -->
+  <div class="filter-bar" id="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" id="filter-all" onclick="setFilter(null)">Iedereen</button>
+  </div>
+ 
+  <!-- Backlogs -->
   <div class="backlogs-row" id="backlogs-row"></div>
-
+ 
   <!-- Board -->
   <div class="board-wrap">
     <table class="board">
@@ -243,8 +274,8 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
       <tbody id="tbody"><tr class="loading-row"><td colspan="99"><span class="spinner"></span>Laden…</td></tr></tbody>
     </table>
   </div>
-
-  <!-- Stats onderaan -->
+ 
+  <!-- Stats -->
   <div class="stats-section">
     <div class="stats-header">📊 Statistieken</div>
     <div class="stats-grid">
@@ -269,26 +300,57 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
         <div class="stat-sub">in het team</div>
       </div>
     </div>
-    <div class="phase-breakdown">
-      <div class="phase-breakdown-title">Verdeling per fase</div>
-      <div class="phase-bars" id="phase-bars"></div>
-    </div>
   </div>
 </main>
-
+ 
 <!-- New project -->
 <div class="modal-backdrop" id="modal-project">
   <div class="modal">
     <h3>Nieuw project</h3>
     <label>Projectnaam</label>
     <input type="text" id="proj-name" placeholder="bijv. Website redesign" />
+    <label>Label (optioneel)</label>
+    <select id="proj-label">
+      <option value="">— geen —</option>
+      <option value="urgent">🔴 Urgent</option>
+      <option value="wacht">🟡 Wacht op klant</option>
+      <option value="intern">🔵 Intern</option>
+      <option value="klant">🟢 Klant</option>
+      <option value="review">🟣 Review</option>
+    </select>
+    <label>Deadline (optioneel)</label>
+    <input type="date" id="proj-deadline" />
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('project')">Annuleren</button>
       <button class="btn btn-dark" onclick="saveProject()">Toevoegen aan backlog</button>
     </div>
   </div>
 </div>
-
+ 
+<!-- Edit project -->
+<div class="modal-backdrop" id="modal-edit-project">
+  <div class="modal">
+    <h3>Project bewerken</h3>
+    <label>Projectnaam</label>
+    <input type="text" id="edit-proj-name" />
+    <label>Label</label>
+    <select id="edit-proj-label">
+      <option value="">— geen —</option>
+      <option value="urgent">🔴 Urgent</option>
+      <option value="wacht">🟡 Wacht op klant</option>
+      <option value="intern">🔵 Intern</option>
+      <option value="klant">🟢 Klant</option>
+      <option value="review">🟣 Review</option>
+    </select>
+    <label>Deadline</label>
+    <input type="date" id="edit-proj-deadline" />
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('edit-project')">Annuleren</button>
+      <button class="btn btn-dark" onclick="saveEditProject()">Opslaan</button>
+    </div>
+  </div>
+</div>
+ 
 <!-- Add employee -->
 <div class="modal-backdrop" id="modal-employee">
   <div class="modal">
@@ -301,7 +363,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
 <!-- Edit employee -->
 <div class="modal-backdrop" id="modal-edit-employee">
   <div class="modal">
@@ -314,7 +376,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
 <!-- Delete employee -->
 <div class="modal-backdrop" id="modal-delete-employee">
   <div class="modal">
@@ -326,7 +388,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
 <!-- Add phase -->
 <div class="modal-backdrop" id="modal-phase">
   <div class="modal">
@@ -339,7 +401,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
 <!-- Edit phase -->
 <div class="modal-backdrop" id="modal-edit-phase">
   <div class="modal">
@@ -352,7 +414,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
 <!-- Delete phase -->
 <div class="modal-backdrop" id="modal-delete-phase">
   <div class="modal">
@@ -364,8 +426,8 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
-<!-- Edit backlog name -->
+ 
+<!-- Edit backlog -->
 <div class="modal-backdrop" id="modal-edit-backlog">
   <div class="modal">
     <h3>Backlog hernoemen</h3>
@@ -377,13 +439,38 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 </div>
-
+ 
+<!-- Add backlog -->
+<div class="modal-backdrop" id="modal-add-backlog">
+  <div class="modal">
+    <h3>Backlog toevoegen</h3>
+    <label>Naam</label>
+    <input type="text" id="add-backlog-name" placeholder="bijv. September 2025" />
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('add-backlog')">Annuleren</button>
+      <button class="btn btn-dark" onclick="saveAddBacklog()">Toevoegen</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- Delete backlog confirm -->
+<div class="modal-backdrop" id="modal-delete-backlog">
+  <div class="modal">
+    <h3>Backlog verwijderen</h3>
+    <div class="modal-warning">⚠️ Verwijderen van <strong id="del-backlog-label"></strong> zet alle projecten hierin naar de eerste backlog.</div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('delete-backlog')">Annuleren</button>
+      <button class="btn btn-danger" onclick="confirmDeleteBacklog()">Verwijderen</button>
+    </div>
+  </div>
+</div>
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 const SUPABASE_URL = 'https://tlvleorfhetvftnvjnht.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsdmxlb3JmaGV0dmZ0bnZqbmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTkxNDMsImV4cCI6MjA5MjkzNTE0M30.fALPAYdOaEiiwUCpgER9R4RYUNKW0TQTP3KFXne1fKY';
-
+ 
 const PHASE_COLORS = [
   {bg:'#e8f0fb',txt:'#1a4fa3',dot:'#3a6fd8',bdr:'#b8cef5'},
   {bg:'#e4f5e9',txt:'#1a6633',dot:'#2d9e4f',bdr:'#aadcbc'},
@@ -398,92 +485,150 @@ const AVA_COLORS = [
   {bg:'#eeebfd',txt:'#4530a8'},{bg:'#fdf3e0',txt:'#7a4d08'},
   {bg:'#fce8f2',txt:'#8a1f5c'},{bg:'#e2f4f0',txt:'#0e5c4e'},
 ];
-const BACKLOG_DOTS = ['#3a6fd8','#2d9e4f','#d4880f'];
-
-let backlogs = [], phases = [], employees = [], projects = [];
-let dragId = null;
-let editingEmpId = null, deletingEmpId = null;
-let editingPhaseId = null, deletingPhaseId = null;
-let editingBacklogId = null;
-
-const hdrs = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' };
-
+const BL_DOTS = ['#3a6fd8','#2d9e4f','#d4880f','#c4407a','#6b52e0','#d95728','#1a9278'];
+const LABEL_NAMES = { urgent:'Urgent', wacht:'Wacht op klant', intern:'Intern', klant:'Klant', review:'Review' };
+ 
+let backlogs=[], phases=[], employees=[], projects=[];
+let dragId=null;
+let editingEmpId=null, deletingEmpId=null;
+let editingPhaseId=null, deletingPhaseId=null;
+let editingBacklogId=null, deletingBacklogId=null;
+let editingProjectId=null;
+let activeFilter=null; // employee id or null
+let searchQuery='';
+ 
+const hdrs = { apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=representation' };
+ 
 async function sbFetch(method, table, body, filter) {
-  const url = `${SUPABASE_URL}/rest/v1/${table}${filter ? '?' + filter : ''}`;
-  const res = await fetch(url, { method, headers: hdrs, body: body ? JSON.stringify(body) : undefined });
-  if (!res.ok) throw new Error(await res.text());
-  return res.status === 204 ? null : res.json();
+  const url = `${SUPABASE_URL}/rest/v1/${table}${filter?'?'+filter:''}`;
+  const res = await fetch(url, { method, headers:hdrs, body:body?JSON.stringify(body):undefined });
+  if(!res.ok) throw new Error(await res.text());
+  return res.status===204 ? null : res.json();
 }
-
+ 
 async function loadAll() {
   try {
-    const [bl, ph, em, pr] = await Promise.all([
-      sbFetch('GET', 'backlogs', null, 'order=position.asc'),
-      sbFetch('GET', 'phases', null, 'order=position.asc'),
-      sbFetch('GET', 'employees', null, 'order=created_at.asc'),
-      sbFetch('GET', 'projects', null, 'order=created_at.asc'),
+    const [bl,ph,em,pr] = await Promise.all([
+      sbFetch('GET','backlogs',null,'order=position.asc'),
+      sbFetch('GET','phases',null,'order=position.asc'),
+      sbFetch('GET','employees',null,'order=created_at.asc'),
+      sbFetch('GET','projects',null,'order=created_at.asc'),
     ]);
-    backlogs = bl; phases = ph; employees = em; projects = pr;
+    backlogs=bl; phases=ph; employees=em; projects=pr;
     render();
   } catch(err) {
-    showToast('Verbinding mislukt: ' + err.message, true);
-    document.getElementById('tbody').innerHTML = `<tr class="loading-row"><td colspan="99">Kon geen verbinding maken met de database.</td></tr>`;
+    showToast('Verbinding mislukt: '+err.message, true);
+    document.getElementById('tbody').innerHTML=`<tr class="loading-row"><td colspan="99">Kon geen verbinding maken.</td></tr>`;
   }
 }
-
-function initials(n) { return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
-function phaseColor(i) { return PHASE_COLORS[i % PHASE_COLORS.length]; }
-function avaColor(i) { return AVA_COLORS[i % AVA_COLORS.length]; }
-function inBacklog(p) { return !p.phase_id; }
-
+ 
+function initials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function phaseColor(i){ return PHASE_COLORS[i%PHASE_COLORS.length]; }
+function avaColor(i){ return AVA_COLORS[i%AVA_COLORS.length]; }
+function inBacklog(p){ return !p.phase_id; }
+ 
+function formatDeadline(d) {
+  if(!d) return '';
+  const dt = new Date(d+'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((dt-today)/(1000*60*60*24));
+  const label = dt.toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+  return { label, overdue: diff < 0, soon: diff >= 0 && diff <= 3 };
+}
+ 
+function highlight(text) {
+  if(!searchQuery) return text;
+  const re = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark class="search-highlight">$1</mark>');
+}
+ 
+function cardMatchesSearch(proj) {
+  if(!searchQuery) return true;
+  return proj.name.toLowerCase().includes(searchQuery.toLowerCase());
+}
+ 
+function cardMatchesFilter(proj) {
+  if(!activeFilter) return true;
+  return proj.employee_id === activeFilter;
+}
+ 
 function makeCard(proj, colorObj, isBacklog) {
   const bg  = isBacklog ? '#f0efe9' : colorObj.bg;
   const txt = isBacklog ? '#6b6860' : colorObj.txt;
   const bdr = isBacklog ? '#ccc9be' : colorObj.bdr;
-  return `<div class="project-card" id="card-${proj.id}" draggable="true"
+ 
+  const dl = proj.deadline ? formatDeadline(proj.deadline) : null;
+  const dlHtml = dl ? `<span class="card-deadline${dl.overdue?' overdue':''}">📅 ${dl.label}${dl.overdue?' ⚠':''}</span>` : '';
+  const labelHtml = proj.label ? `<span class="card-label label-${proj.label}">${LABEL_NAMES[proj.label]||proj.label}</span>` : '';
+  const metaHtml = (labelHtml||dlHtml) ? `<div class="card-meta">${labelHtml}${dlHtml}</div>` : '';
+ 
+  const hidden = (!cardMatchesSearch(proj) || !cardMatchesFilter(proj)) ? ' card-hidden' : '';
+ 
+  return `<div class="project-card${hidden}" id="card-${proj.id}" draggable="true"
     style="background:${bg};color:${txt};border-color:${bdr};"
     ondragstart="onDragStart(event,'${proj.id}')" ondragend="onDragEnd()">
-    <span class="drag-handle">⠿</span>
-    <span class="card-name">${proj.name}</span>
-    <button class="del-btn" onclick="deleteProject('${proj.id}')" title="Verwijderen">×</button>
+    <div class="card-top">
+      <span class="drag-handle">⠿</span>
+      <span class="card-name">${highlight(proj.name)}</span>
+      <button class="icon-btn" style="visibility:hidden;" class="edit-card-btn" onclick="openEditProject('${proj.id}')" title="Bewerken" onmouseenter="this.style.visibility='visible'">✎</button>
+      <button class="del-btn" onclick="deleteProject('${proj.id}')" title="Verwijderen">×</button>
+    </div>
+    ${metaHtml}
   </div>`;
 }
-
+ 
 function render() {
-  // Chips
+  // chips
   document.getElementById('chip-projects').textContent = projects.length;
   document.getElementById('chip-employees').textContent = employees.length;
   document.getElementById('chip-phases').textContent = phases.length;
-
-  // ── Backlogs row ──
-  const row = document.getElementById('backlogs-row');
-  row.innerHTML = backlogs.map((bl, bi) => {
-    const dot = BACKLOG_DOTS[bi % BACKLOG_DOTS.length];
-    const cards = projects.filter(p => p.backlog_id === bl.id && inBacklog(p));
+ 
+  // filter buttons
+  const fb = document.getElementById('filter-bar');
+  fb.innerHTML = `<span class="filter-label">Filter:</span>
+    <button class="filter-btn${!activeFilter?' active':''}" onclick="setFilter(null)">Iedereen</button>` +
+    employees.map((emp,ei) => {
+      const ac = avaColor(ei);
+      return `<button class="filter-btn${activeFilter===emp.id?' active':''}" onclick="setFilter('${emp.id}')">
+        <span class="avatar-xs" style="background:${ac.bg};color:${ac.txt};">${initials(emp.name)}</span>
+        ${emp.name}
+      </button>`;
+    }).join('');
+ 
+  // backlogs
+  const blCols = backlogs.map((bl,bi) => {
+    const dot = BL_DOTS[bi%BL_DOTS.length];
+    const cards = projects.filter(p => p.backlog_id===bl.id && inBacklog(p));
+    const visibleCount = cards.filter(p => cardMatchesSearch(p) && cardMatchesFilter(p)).length;
+    const canDelete = backlogs.length > 1;
     return `<div class="backlog-col">
       <div class="backlog-col-header">
         <div class="backlog-col-dot" style="background:${dot}"></div>
         <span class="backlog-col-name">${bl.name}</span>
         <div class="backlog-col-actions">
           <button class="icon-btn" onclick="openEditBacklog('${bl.id}')" title="Hernoemen">✎</button>
+          ${canDelete?`<button class="icon-btn danger" onclick="openDeleteBacklog('${bl.id}')" title="Verwijderen">🗑</button>`:''}
         </div>
-        <span class="backlog-col-count">${cards.length}</span>
+        <span class="backlog-col-count">${visibleCount}</span>
       </div>
       <div class="backlog-col-cards" id="bl-${bl.id}"
         ondragover="onDragOver(event,null,null,'${bl.id}')"
         ondragleave="onDragLeave(event)"
         ondrop="onDrop(event,null,null,'${bl.id}')">
-        ${cards.length
-          ? cards.map(p => makeCard(p, null, true)).join('')
-          : `<span class="backlog-empty">Leeg — sleep projecten hierheen</span>`}
+        ${cards.length ? cards.map(p=>makeCard(p,null,true)).join('') : `<span class="backlog-empty">Leeg</span>`}
       </div>
     </div>`;
   }).join('');
-
-  // ── Board thead ──
-  document.getElementById('thead-row').innerHTML = `<th>Medewerker</th>` + phases.map((ph, i) => {
+ 
+  const cols = backlogs.length;
+  document.getElementById('backlogs-row').style.gridTemplateColumns = `repeat(${cols},1fr) 80px`;
+  document.getElementById('backlogs-row').innerHTML = blCols +
+    `<div class="add-backlog-col" onclick="openModal('add-backlog')" title="Backlog toevoegen">＋</div>`;
+ 
+  // thead
+  document.getElementById('thead-row').innerHTML = `<th>Medewerker</th>` + phases.map((ph,i) => {
     const c = phaseColor(i);
-    const cnt = projects.filter(p => p.phase_id === ph.id).length;
+    const cnt = projects.filter(p=>p.phase_id===ph.id && cardMatchesFilter(p) && cardMatchesSearch(p)).length;
     return `<th>
       <div class="phase-header">
         <span class="phase-dot" style="background:${c.dot}"></span>
@@ -496,14 +641,15 @@ function render() {
       </div>
     </th>`;
   }).join('');
-
-  // ── Board tbody ──
+ 
+  // tbody
   const tbody = document.getElementById('tbody');
-  if (employees.length === 0) {
-    tbody.innerHTML = `<tr class="loading-row"><td colspan="${1+phases.length}">Voeg medewerkers toe met "+ Medewerker" — sleep daarna backlog-kaarten naar hun fase.</td></tr>`;
+  if(employees.length===0) {
+    tbody.innerHTML=`<tr class="loading-row"><td colspan="${1+phases.length}">Voeg medewerkers toe met "+ Medewerker".</td></tr>`;
   } else {
-    tbody.innerHTML = employees.map((emp, ei) => {
+    tbody.innerHTML = employees.map((emp,ei) => {
       const ac = avaColor(ei);
+      const empHidden = activeFilter && activeFilter!==emp.id ? ' emp-hidden' : '';
       const empCell = `<td>
         <div class="employee-cell">
           <div class="avatar" style="background:${ac.bg};color:${ac.txt};">${initials(emp.name)}</div>
@@ -514,242 +660,288 @@ function render() {
           </div>
         </div>
       </td>`;
-      const phaseCells = phases.map((ph, pi) => {
+      const phaseCells = phases.map((ph,pi) => {
         const c = phaseColor(pi);
-        const cards = projects.filter(p => p.employee_id === emp.id && p.phase_id === ph.id);
+        const cards = projects.filter(p=>p.employee_id===emp.id && p.phase_id===ph.id);
         return `<td><div class="cell-inner"
           ondragover="onDragOver(event,'${ph.id}','${emp.id}',null)"
           ondragleave="onDragLeave(event)"
           ondrop="onDrop(event,'${ph.id}','${emp.id}',null)">
-          ${cards.map(p => makeCard(p, c, false)).join('')}
+          ${cards.map(p=>makeCard(p,c,false)).join('')}
         </div></td>`;
       }).join('');
-      return `<tr>${empCell}${phaseCells}</tr>`;
+      return `<tr${empHidden}>${empCell}${phaseCells}</tr>`;
     }).join('');
   }
-
-  // ── Stats ──
+ 
+  // stats
   const total = projects.length;
   const inBl = projects.filter(inBacklog).length;
-  const active = total - inBl;
   document.getElementById('s-total').textContent = total;
   document.getElementById('s-backlog').textContent = inBl;
-  document.getElementById('s-active').textContent = active;
+  document.getElementById('s-active').textContent = total-inBl;
   document.getElementById('s-emp').textContent = employees.length;
-
-  const barsEl = document.getElementById('phase-bars');
-  if (phases.length === 0) {
-    barsEl.innerHTML = `<span style="font-size:12px;color:var(--text3);">Nog geen fases aangemaakt.</span>`;
-  } else {
-    const maxCount = Math.max(1, ...phases.map(ph => projects.filter(p => p.phase_id === ph.id).length));
-    barsEl.innerHTML = phases.map((ph, i) => {
-      const c = phaseColor(i);
-      const cnt = projects.filter(p => p.phase_id === ph.id).length;
-      const pct = Math.round((cnt / maxCount) * 100);
-      return `<div class="phase-bar-row">
-        <span class="phase-bar-label">${ph.name}</span>
-        <div class="phase-bar-track">
-          <div class="phase-bar-fill" style="width:${pct}%;background:${c.dot};"></div>
-        </div>
-        <span class="phase-bar-num">${cnt}</span>
-      </div>`;
-    }).join('');
-  }
 }
-
+ 
+// ── Filter & search ──
+function setFilter(empId) {
+  activeFilter = empId;
+  applyFilters();
+}
+ 
+function applyFilters() {
+  searchQuery = document.getElementById('search-input').value.trim();
+  render();
+}
+ 
+function clearSearch() {
+  document.getElementById('search-input').value='';
+  searchQuery='';
+  render();
+}
+ 
 // ── Drag & drop ──
-function onDragStart(e, id) {
-  dragId = id;
-  setTimeout(() => { const el = document.getElementById('card-'+id); if(el) el.classList.add('dragging'); }, 0);
-  e.dataTransfer.effectAllowed = 'move';
+function onDragStart(e,id) {
+  dragId=id;
+  setTimeout(()=>{ const el=document.getElementById('card-'+id); if(el) el.classList.add('dragging'); },0);
+  e.dataTransfer.effectAllowed='move';
 }
 function onDragEnd() {
-  if(dragId) { const el = document.getElementById('card-'+dragId); if(el) el.classList.remove('dragging'); }
-  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  if(dragId){ const el=document.getElementById('card-'+dragId); if(el) el.classList.remove('dragging'); }
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
 }
-function onDragOver(e, phaseId, empId, backlogId) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  const zone = e.currentTarget;
-  document.querySelectorAll('.drag-over').forEach(el => { if(el!==zone) el.classList.remove('drag-over'); });
+function onDragOver(e,phaseId,empId,backlogId) {
+  e.preventDefault(); e.dataTransfer.dropEffect='move';
+  const zone=e.currentTarget;
+  document.querySelectorAll('.drag-over').forEach(el=>{ if(el!==zone) el.classList.remove('drag-over'); });
   zone.classList.add('drag-over');
 }
 function onDragLeave(e) {
   if(!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('drag-over');
 }
-async function onDrop(e, phaseId, empId, backlogId) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
+async function onDrop(e,phaseId,empId,backlogId) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
   if(!dragId) return;
-  const proj = projects.find(p => p.id === dragId);
-  if(!proj) { dragId=null; return; }
-
-  const newPhase = phaseId || null;
-  const newEmp   = empId   || null;
-  const newBl    = backlogId || null;
-
-  // no change
-  if(proj.phase_id===newPhase && proj.employee_id===newEmp && proj.backlog_id===newBl) { dragId=null; return; }
-
-  proj.phase_id = newPhase;
-  proj.employee_id = newEmp;
-  proj.backlog_id = newBl;
+  const proj=projects.find(p=>p.id===dragId);
+  if(!proj){ dragId=null; return; }
+  const newPhase=phaseId||null, newEmp=empId||null, newBl=backlogId||null;
+  if(proj.phase_id===newPhase && proj.employee_id===newEmp && proj.backlog_id===newBl){ dragId=null; return; }
+  proj.phase_id=newPhase; proj.employee_id=newEmp; proj.backlog_id=newBl;
   render();
-
   try {
-    await sbFetch('PATCH', 'projects', { phase_id: newPhase, employee_id: newEmp, backlog_id: newBl }, `id=eq.${dragId}`);
-    showToast(newPhase ? 'Project verplaatst' : 'Terug naar backlog');
-  } catch(err) { showToast('Opslaan mislukt: ' + err.message, true); loadAll(); }
-  dragId = null;
+    await sbFetch('PATCH','projects',{phase_id:newPhase,employee_id:newEmp,backlog_id:newBl},`id=eq.${dragId}`);
+    showToast(newPhase?'Project verplaatst':'Terug naar backlog');
+  } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
+  dragId=null;
 }
-
+ 
 // ── Modals ──
-function openModal(type) { document.getElementById(`modal-${type}`).classList.add('open'); }
-function closeModal(type) { document.getElementById(`modal-${type}`).classList.remove('open'); }
-
+function openModal(t){ document.getElementById(`modal-${t}`).classList.add('open'); }
+function closeModal(t){ document.getElementById(`modal-${t}`).classList.remove('open'); }
+ 
 // Projects
 async function saveProject() {
-  const name = document.getElementById('proj-name').value.trim();
+  const name=document.getElementById('proj-name').value.trim();
   if(!name) return;
-  const firstBacklog = backlogs[0];
+  const label=document.getElementById('proj-label').value||null;
+  const deadline=document.getElementById('proj-deadline').value||null;
+  const firstBl=backlogs[0];
   try {
-    const [result] = await sbFetch('POST', 'projects', { name, phase_id: null, employee_id: null, backlog_id: firstBacklog ? firstBacklog.id : null });
-    projects.push(result);
-    document.getElementById('proj-name').value = '';
-    closeModal('project'); render(); showToast('Project toegevoegd aan backlog');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+    const [r]=await sbFetch('POST','projects',{name,label,deadline,phase_id:null,employee_id:null,backlog_id:firstBl?firstBl.id:null});
+    projects.push(r);
+    document.getElementById('proj-name').value='';
+    document.getElementById('proj-label').value='';
+    document.getElementById('proj-deadline').value='';
+    closeModal('project'); render(); showToast('Project toegevoegd');
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
+ 
 async function deleteProject(id) {
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/projects?id=eq.${id}`, { method:'DELETE', headers: hdrs });
-    projects = projects.filter(p => p.id !== id);
+    await fetch(`${SUPABASE_URL}/rest/v1/projects?id=eq.${id}`,{method:'DELETE',headers:hdrs});
+    projects=projects.filter(p=>p.id!==id);
     render(); showToast('Project verwijderd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
-
+ 
+function openEditProject(id) {
+  editingProjectId=id;
+  const p=projects.find(x=>x.id===id);
+  document.getElementById('edit-proj-name').value=p.name;
+  document.getElementById('edit-proj-label').value=p.label||'';
+  document.getElementById('edit-proj-deadline').value=p.deadline||'';
+  openModal('edit-project');
+}
+async function saveEditProject() {
+  const name=document.getElementById('edit-proj-name').value.trim();
+  if(!name) return;
+  const label=document.getElementById('edit-proj-label').value||null;
+  const deadline=document.getElementById('edit-proj-deadline').value||null;
+  try {
+    await sbFetch('PATCH','projects',{name,label,deadline},`id=eq.${editingProjectId}`);
+    const p=projects.find(x=>x.id===editingProjectId);
+    p.name=name; p.label=label; p.deadline=deadline;
+    closeModal('edit-project'); render(); showToast('Project bijgewerkt');
+  } catch(e){ showToast('Fout: '+e.message,true); }
+}
+ 
 // Employees
 async function saveEmployee() {
-  const name = document.getElementById('emp-name-input').value.trim();
+  const name=document.getElementById('emp-name-input').value.trim();
   if(!name) return;
   try {
-    const [result] = await sbFetch('POST', 'employees', { name });
-    employees.push(result);
-    document.getElementById('emp-name-input').value = '';
+    const [r]=await sbFetch('POST','employees',{name});
+    employees.push(r);
+    document.getElementById('emp-name-input').value='';
     closeModal('employee'); render(); showToast('Medewerker toegevoegd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
 function openEditEmployee(id) {
-  editingEmpId = id;
-  document.getElementById('edit-emp-name').value = employees.find(e=>e.id===id).name;
+  editingEmpId=id;
+  document.getElementById('edit-emp-name').value=employees.find(e=>e.id===id).name;
   openModal('edit-employee');
 }
 async function saveEditEmployee() {
-  const name = document.getElementById('edit-emp-name').value.trim();
+  const name=document.getElementById('edit-emp-name').value.trim();
   if(!name) return;
   try {
-    await sbFetch('PATCH', 'employees', { name }, `id=eq.${editingEmpId}`);
-    employees.find(e=>e.id===editingEmpId).name = name;
+    await sbFetch('PATCH','employees',{name},`id=eq.${editingEmpId}`);
+    employees.find(e=>e.id===editingEmpId).name=name;
     closeModal('edit-employee'); render(); showToast('Medewerker bijgewerkt');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
 function openDeleteEmployee(id) {
-  deletingEmpId = id;
-  document.getElementById('del-emp-label').textContent = employees.find(e=>e.id===id).name;
+  deletingEmpId=id;
+  document.getElementById('del-emp-label').textContent=employees.find(e=>e.id===id).name;
   openModal('delete-employee');
 }
 async function confirmDeleteEmployee() {
   try {
-    const empProjects = projects.filter(p => p.employee_id === deletingEmpId);
-    const firstBl = backlogs[0];
-    await Promise.all(empProjects.map(p =>
-      sbFetch('PATCH', 'projects', { employee_id: null, phase_id: null, backlog_id: firstBl ? firstBl.id : null }, `id=eq.${p.id}`)
-    ));
-    empProjects.forEach(p => { p.employee_id=null; p.phase_id=null; p.backlog_id = firstBl ? firstBl.id : null; });
-    await fetch(`${SUPABASE_URL}/rest/v1/employees?id=eq.${deletingEmpId}`, { method:'DELETE', headers: hdrs });
-    employees = employees.filter(e=>e.id!==deletingEmpId);
+    const firstBl=backlogs[0];
+    const ep=projects.filter(p=>p.employee_id===deletingEmpId);
+    await Promise.all(ep.map(p=>sbFetch('PATCH','projects',{employee_id:null,phase_id:null,backlog_id:firstBl?firstBl.id:null},`id=eq.${p.id}`)));
+    ep.forEach(p=>{ p.employee_id=null; p.phase_id=null; p.backlog_id=firstBl?firstBl.id:null; });
+    await fetch(`${SUPABASE_URL}/rest/v1/employees?id=eq.${deletingEmpId}`,{method:'DELETE',headers:hdrs});
+    employees=employees.filter(e=>e.id!==deletingEmpId);
+    if(activeFilter===deletingEmpId) activeFilter=null;
     closeModal('delete-employee'); render(); showToast('Medewerker verwijderd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
-
+ 
 // Phases
 async function savePhase() {
-  const name = document.getElementById('phase-name-input').value.trim();
+  const name=document.getElementById('phase-name-input').value.trim();
   if(!name) return;
   try {
-    const [result] = await sbFetch('POST', 'phases', { name, position: phases.length+1 });
-    phases.push(result);
-    document.getElementById('phase-name-input').value = '';
+    const [r]=await sbFetch('POST','phases',{name,position:phases.length+1});
+    phases.push(r);
+    document.getElementById('phase-name-input').value='';
     closeModal('phase'); render(); showToast('Fase toegevoegd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
 function openEditPhase(id) {
-  editingPhaseId = id;
-  document.getElementById('edit-phase-name').value = phases.find(p=>p.id===id).name;
+  editingPhaseId=id;
+  document.getElementById('edit-phase-name').value=phases.find(p=>p.id===id).name;
   openModal('edit-phase');
 }
 async function saveEditPhase() {
-  const name = document.getElementById('edit-phase-name').value.trim();
+  const name=document.getElementById('edit-phase-name').value.trim();
   if(!name) return;
   try {
-    await sbFetch('PATCH', 'phases', { name }, `id=eq.${editingPhaseId}`);
-    phases.find(p=>p.id===editingPhaseId).name = name;
+    await sbFetch('PATCH','phases',{name},`id=eq.${editingPhaseId}`);
+    phases.find(p=>p.id===editingPhaseId).name=name;
     closeModal('edit-phase'); render(); showToast('Fase hernoemd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
 function openDeletePhase(id) {
-  deletingPhaseId = id;
-  document.getElementById('del-phase-label').textContent = phases.find(p=>p.id===id).name;
+  deletingPhaseId=id;
+  document.getElementById('del-phase-label').textContent=phases.find(p=>p.id===id).name;
   openModal('delete-phase');
 }
 async function confirmDeletePhase() {
   try {
-    const phProjects = projects.filter(p => p.phase_id === deletingPhaseId);
-    const firstBl = backlogs[0];
-    await Promise.all(phProjects.map(p =>
-      sbFetch('PATCH', 'projects', { phase_id: null, employee_id: null, backlog_id: firstBl ? firstBl.id : null }, `id=eq.${p.id}`)
-    ));
-    phProjects.forEach(p => { p.phase_id=null; p.employee_id=null; p.backlog_id = firstBl ? firstBl.id : null; });
-    await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`, { method:'DELETE', headers: hdrs });
-    phases = phases.filter(p=>p.id!==deletingPhaseId);
+    const firstBl=backlogs[0];
+    const pp=projects.filter(p=>p.phase_id===deletingPhaseId);
+    await Promise.all(pp.map(p=>sbFetch('PATCH','projects',{phase_id:null,employee_id:null,backlog_id:firstBl?firstBl.id:null},`id=eq.${p.id}`)));
+    pp.forEach(p=>{ p.phase_id=null; p.employee_id=null; p.backlog_id=firstBl?firstBl.id:null; });
+    await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`,{method:'DELETE',headers:hdrs});
+    phases=phases.filter(p=>p.id!==deletingPhaseId);
     closeModal('delete-phase'); render(); showToast('Fase verwijderd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
-
+ 
 // Backlogs
 function openEditBacklog(id) {
-  editingBacklogId = id;
-  document.getElementById('edit-backlog-name').value = backlogs.find(b=>b.id===id).name;
+  editingBacklogId=id;
+  document.getElementById('edit-backlog-name').value=backlogs.find(b=>b.id===id).name;
   openModal('edit-backlog');
 }
 async function saveEditBacklog() {
-  const name = document.getElementById('edit-backlog-name').value.trim();
+  const name=document.getElementById('edit-backlog-name').value.trim();
   if(!name) return;
   try {
-    await sbFetch('PATCH', 'backlogs', { name }, `id=eq.${editingBacklogId}`);
-    backlogs.find(b=>b.id===editingBacklogId).name = name;
+    await sbFetch('PATCH','backlogs',{name},`id=eq.${editingBacklogId}`);
+    backlogs.find(b=>b.id===editingBacklogId).name=name;
     closeModal('edit-backlog'); render(); showToast('Backlog hernoemd');
-  } catch(e) { showToast('Fout: ' + e.message, true); }
+  } catch(e){ showToast('Fout: '+e.message,true); }
 }
-
+async function saveAddBacklog() {
+  const name=document.getElementById('add-backlog-name').value.trim();
+  if(!name) return;
+  try {
+    const [r]=await sbFetch('POST','backlogs',{name,position:backlogs.length+1});
+    backlogs.push(r);
+    document.getElementById('add-backlog-name').value='';
+    closeModal('add-backlog'); render(); showToast('Backlog toegevoegd');
+  } catch(e){ showToast('Fout: '+e.message,true); }
+}
+function openDeleteBacklog(id) {
+  deletingBacklogId=id;
+  document.getElementById('del-backlog-label').textContent=backlogs.find(b=>b.id===id).name;
+  openModal('delete-backlog');
+}
+async function confirmDeleteBacklog() {
+  try {
+    const firstBl=backlogs.find(b=>b.id!==deletingBacklogId);
+    const bp=projects.filter(p=>p.backlog_id===deletingBacklogId);
+    await Promise.all(bp.map(p=>sbFetch('PATCH','projects',{backlog_id:firstBl?firstBl.id:null},`id=eq.${p.id}`)));
+    bp.forEach(p=>{ p.backlog_id=firstBl?firstBl.id:null; });
+    await fetch(`${SUPABASE_URL}/rest/v1/backlogs?id=eq.${deletingBacklogId}`,{method:'DELETE',headers:hdrs});
+    backlogs=backlogs.filter(b=>b.id!==deletingBacklogId);
+    closeModal('delete-backlog'); render(); showToast('Backlog verwijderd');
+  } catch(e){ showToast('Fout: '+e.message,true); }
+}
+ 
 // Toast
 let toastTimer;
-function showToast(msg, isError=false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (isError ? ' error' : '');
+function showToast(msg,isError=false) {
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(isError?' error':'');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
-
-document.querySelectorAll('.modal-backdrop').forEach(el => {
-  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
+ 
+// Backdrop close
+document.querySelectorAll('.modal-backdrop').forEach(el=>{
+  el.addEventListener('click',e=>{ if(e.target===el) el.classList.remove('open'); });
 });
-['proj-name','emp-name-input','edit-emp-name','phase-name-input','edit-phase-name','edit-backlog-name'].forEach(id => {
-  const fn = { 'proj-name': saveProject, 'emp-name-input': saveEmployee, 'edit-emp-name': saveEditEmployee,
-    'phase-name-input': savePhase, 'edit-phase-name': saveEditPhase, 'edit-backlog-name': saveEditBacklog };
-  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') fn[id](); });
+ 
+// Enter keys
+const enterMap = {
+  'proj-name': saveProject,
+  'emp-name-input': saveEmployee,
+  'edit-emp-name': saveEditEmployee,
+  'phase-name-input': savePhase,
+  'edit-phase-name': saveEditPhase,
+  'edit-backlog-name': saveEditBacklog,
+  'add-backlog-name': saveAddBacklog,
+  'edit-proj-name': saveEditProject,
+};
+Object.entries(enterMap).forEach(([id,fn])=>{
+  document.getElementById(id).addEventListener('keydown',e=>{ if(e.key==='Enter') fn(); });
 });
-
+ 
 loadAll();
 </script>
 </body>
