@@ -35,16 +35,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   padding: 0 24px; height: 56px; display: flex; align-items: center;
   justify-content: space-between; position: sticky; top: 0; z-index: 50; gap: 12px;
 }
-.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.header-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
 .logo-dot { width: 8px; height: 8px; background: var(--text); border-radius: 50%; }
+.export-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); cursor: pointer; transition: background 0.12s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.export-btn:hover { background: var(--border); color: var(--text); }
 .header-center { flex: 1; max-width: 340px; }
 .search-wrap { position: relative; }
-.search-wrap input {
-  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px;
-  padding: 7px 12px 7px 32px; border: 1px solid var(--border2);
-  border-radius: var(--radius-sm); background: var(--surface2); color: var(--text);
-  outline: none; transition: border-color 0.15s, background 0.15s;
-}
+.search-wrap input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 7px 12px 7px 32px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface2); color: var(--text); outline: none; transition: border-color 0.15s, background 0.15s; }
 .search-wrap input:focus { border-color: var(--text); background: var(--surface); }
 .search-wrap input::placeholder { color: var(--text3); }
 .search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text3); pointer-events: none; }
@@ -53,7 +51,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
 /* ── Buttons ── */
-.btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.12s; white-space: nowrap; }
+.btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.12s; white-space: nowrap; }
 .btn:hover { background: var(--surface2); }
 .btn-dark { background: var(--text); color: #fff; border-color: var(--text); }
 .btn-dark:hover { background: #333; }
@@ -65,7 +63,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
 /* ── Main ── */
 .main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-
 .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .page-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
@@ -93,27 +90,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .backlog-col-cards { display: flex; flex-direction: column; gap: 6px; padding: 10px; min-height: 70px; flex: 1; transition: background 0.1s; }
 .backlog-col-cards.drag-over { background: var(--surface2); outline: 2px dashed var(--border2); outline-offset: -3px; border-radius: 0 0 var(--radius) var(--radius); }
 .backlog-empty { font-size: 12px; color: var(--text3); font-style: italic; padding: 4px 2px; }
-
-/* ── Add backlog button — now more prominent ── */
-.add-backlog-col {
-  background: var(--surface);
-  border: 1.5px dashed var(--border2);
-  border-radius: var(--radius);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
-  min-height: 80px;
-  color: var(--text3);
-  font-size: 12px;
-  font-weight: 500;
-  gap: 6px;
-  box-shadow: var(--shadow);
-  padding: 12px;
-  text-align: center;
-}
-.add-backlog-col:hover { border-color: var(--text2); background: var(--surface2); color: var(--text2); box-shadow: var(--shadow-md); }
-.add-backlog-plus { font-size: 22px; line-height: 1; font-weight: 300; }
+.add-backlog-col { background: var(--surface); border: 1.5px dashed var(--border2); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: border-color 0.12s, background 0.12s, box-shadow 0.12s; min-height: 80px; color: var(--text3); font-size: 12px; font-weight: 500; gap: 4px; box-shadow: var(--shadow); padding: 12px; text-align: center; }
+.add-backlog-col:hover { border-color: var(--text2); background: var(--surface2); color: var(--text2); }
+.add-backlog-plus { font-size: 20px; line-height: 1; }
 
 /* ── Board ── */
 .board-wrap { overflow-x: auto; border-radius: var(--radius); }
@@ -140,18 +119,8 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .cell-inner { display: flex; flex-direction: column; gap: 5px; min-height: 52px; border-radius: var(--radius-sm); padding: 2px; transition: background 0.12s; }
 .cell-inner.drag-over { background: var(--surface2); outline: 2px dashed var(--border2); outline-offset: -2px; }
 
-/* ── Last phase highlight ── */
-.last-phase-header { background: #fdf3e0 !important; }
-.last-phase-header .phase-dot { background: #d4880f !important; }
-
 /* ── Cards ── */
-.project-card {
-  border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px; font-weight: 500;
-  display: flex; flex-direction: column; gap: 4px;
-  border: 1px solid transparent; cursor: pointer; user-select: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 0 rgba(0,0,0,0.04);
-  transition: box-shadow 0.12s, transform 0.12s, opacity 0.12s;
-}
+.project-card { border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px; font-weight: 500; display: flex; flex-direction: column; gap: 4px; border: 1px solid transparent; cursor: pointer; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 0 rgba(0,0,0,0.04); transition: box-shadow 0.12s, transform 0.12s, opacity 0.12s; }
 .project-card[draggable]:active { cursor: grabbing; }
 .project-card.dragging { opacity: 0.35; transform: scale(0.96); box-shadow: none; }
 .project-card:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.13); transform: translateY(-1px); }
@@ -160,16 +129,12 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .card-name { flex: 1; line-height: 1.4; word-break: break-word; }
 .del-btn { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; padding: 0; opacity: 0.4; color: inherit; flex-shrink: 0; }
 .project-card:hover .del-btn { visibility: visible; }
-
-/* priority dot — only hoog */
 .priority-dot-hoog { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; flex-shrink: 0; margin-top: 4px; }
-
 .card-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding-left: 17px; }
-.card-deadline { font-size: 10px; font-family: 'DM Mono', monospace; opacity: 0.65; display: flex; align-items: center; gap: 3px; }
+.card-deadline { font-size: 10px; font-family: 'DM Mono', monospace; opacity: 0.65; }
 .card-deadline.overdue { color: #ef4444; opacity: 1; font-weight: 600; }
-.card-deadline.soon    { color: #d97706; opacity: 1; font-weight: 600; }
-.card-note { font-size: 11px; line-height: 1.4; opacity: 0.6; padding-left: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-style: italic; }
-
+.card-deadline.soon { color: #d97706; opacity: 1; font-weight: 600; }
+.card-note { font-size: 11px; line-height: 1.4; opacity: 0.6; padding-left: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
 .search-highlight { background: #fef08a; border-radius: 2px; color: var(--text); }
 .card-hidden { display: none !important; }
 
@@ -192,28 +157,35 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .deadline-item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text2); font-weight: 500; }
 .deadline-item-days { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
 .days-overdue { background: #fee2e2; color: #b91c1c; }
-.days-soon    { background: #fef3c7; color: #92400e; }
-.days-ok      { background: var(--surface2); color: var(--text3); }
+.days-soon { background: #fef3c7; color: #92400e; }
+.days-ok { background: var(--surface2); color: var(--text3); }
 .deadline-empty { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 4px; }
 
 /* ── Completed section ── */
-.completed-section { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.completed-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--green-bg); cursor: pointer; }
-.completed-header-left { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); }
-.completed-toggle { font-size: 12px; color: var(--green); }
-.completed-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: #fff; border: 1px solid var(--green-border); border-radius: 20px; padding: 1px 7px; color: var(--green); }
-.completed-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
-.completed-list.hidden { display: none; }
-.completed-item {
-  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-  background: var(--surface2); border-radius: var(--radius-sm);
-  border: 1px solid var(--border); font-size: 13px;
-}
-.completed-item-name { flex: 1; font-weight: 500; color: var(--text); }
-.completed-item-date { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); flex-shrink: 0; }
-.completed-item-note { font-size: 11px; color: var(--text2); font-style: italic; }
-.completed-item-actions { display: flex; gap: 4px; }
-.completed-empty { font-size: 13px; color: var(--text3); font-style: italic; padding: 8px 0; }
+.completed-section { display: flex; flex-direction: column; gap: 12px; }
+.completed-section-header { display: flex; align-items: center; justify-content: space-between; }
+.completed-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); display: flex; align-items: center; gap: 8px; }
+.completed-total-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 20px; padding: 1px 8px; color: var(--green); }
+
+/* monthly grid — 3 columns */
+.completed-months-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.completed-month-col { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--green-border); }
+.completed-month-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--green-border); background: var(--green-bg); }
+.completed-month-dot { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex-shrink: 0; }
+.completed-month-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); flex: 1; }
+.completed-month-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: #fff; border: 1px solid var(--green-border); border-radius: 20px; padding: 1px 6px; color: var(--green); }
+.completed-month-cards { display: flex; flex-direction: column; gap: 6px; padding: 10px; }
+
+.completed-card { display: flex; flex-direction: column; gap: 3px; padding: 8px 10px; background: var(--surface2); border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer; transition: box-shadow 0.12s, transform 0.12s; }
+.completed-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
+.completed-card-top { display: flex; align-items: center; gap: 8px; }
+.completed-card-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--text); }
+.completed-card-date { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--green); font-weight: 600; flex-shrink: 0; }
+.completed-card-reopen { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text3); padding: 0 2px; }
+.completed-card:hover .completed-card-reopen { visibility: visible; }
+.completed-card-note { font-size: 11px; color: var(--text2); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 2px; }
+.completed-empty-month { font-size: 12px; color: var(--text3); font-style: italic; }
 
 /* ── Loading ── */
 .loading-row td { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; }
@@ -228,33 +200,57 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 /* ── Modals ── */
 .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.28); z-index: 100; align-items: center; justify-content: center; }
 .modal-backdrop.open { display: flex; }
-.modal { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; width: 380px; box-shadow: var(--shadow-md); max-height: 90vh; overflow-y: auto; }
+.modal { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; width: 400px; box-shadow: var(--shadow-md); max-height: 90vh; overflow-y: auto; }
 .modal h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; }
 .modal label { font-size: 12px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; }
 .modal input, .modal select, .modal textarea { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); margin-bottom: 14px; outline: none; transition: border-color 0.1s; resize: vertical; }
 .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--text); }
-.modal textarea { min-height: 64px; line-height: 1.5; }
-.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+.modal textarea { min-height: 60px; line-height: 1.5; }
+.modal-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; flex-wrap: wrap; align-items: center; }
+.modal-actions-left { margin-right: auto; }
 .modal-warning { font-size: 12px; color: var(--text2); background: #fef9ec; border: 1px solid #f5e0a0; border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 14px; line-height: 1.5; }
 .modal-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 16px; }
-.modal-section { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 12px; margin-top: 2px; }
 .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .input-row > div { display: flex; flex-direction: column; gap: 5px; }
 .input-row input, .input-row select { margin-bottom: 0; }
 
-/* complete confirm modal */
-.complete-banner { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: var(--green); font-weight: 500; text-align: center; }
+/* ── Phase history modal ── */
+.history-modal .modal { width: 460px; }
+.history-timeline { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+.history-item { display: flex; gap: 14px; padding-bottom: 16px; position: relative; }
+.history-item:last-child { padding-bottom: 0; }
+.history-line { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.history-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--text2); border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--border2); flex-shrink: 0; margin-top: 3px; }
+.history-dot.completed { background: #16a34a; box-shadow: 0 0 0 2px var(--green-border); }
+.history-dot.created { background: var(--text3); }
+.history-connector { flex: 1; width: 2px; background: var(--border); margin: 4px 0; }
+.history-content { flex: 1; padding-bottom: 4px; }
+.history-phase { font-size: 13px; font-weight: 600; color: var(--text); }
+.history-meta { font-size: 11px; color: var(--text3); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; }
+.history-emp { font-weight: 500; color: var(--text2); }
+.history-note { font-size: 11px; color: var(--text2); font-style: italic; margin-top: 4px; background: var(--surface2); border-radius: var(--radius-sm); padding: 5px 8px; border: 1px solid var(--border); }
+.history-empty { font-size: 13px; color: var(--text3); font-style: italic; }
+
+/* complete modal */
+.complete-banner { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: var(--green); font-weight: 500; text-align: center; }
 
 @media (max-width: 900px) {
   .stats-body { grid-template-columns: repeat(2,1fr); }
   .stats-body .stat-card:last-child { grid-column: 1/-1; border-top: 1px solid var(--border); border-right: none; }
+  .completed-months-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .completed-months-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
 <header class="header">
-  <div class="logo"><div class="logo-dot"></div>Planning board</div>
+  <div class="header-left">
+    <div class="logo"><div class="logo-dot"></div>Planning board</div>
+    <button class="export-btn" onclick="exportToExcel()">⬇ Exporteren</button>
+  </div>
   <div class="header-center">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
@@ -322,18 +318,15 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
   </div>
 
-  <!-- Completed projects -->
-  <div class="completed-section">
-    <div class="completed-header" onclick="toggleCompleted()">
-      <div class="completed-header-left">
-        ✅ Afgeronde projecten
-        <span class="completed-count" id="completed-count">0</span>
+  <!-- Completed -->
+  <div class="completed-section" id="completed-section">
+    <div class="completed-section-header">
+      <div class="completed-section-title">
+        Afgeronde projecten
+        <span class="completed-total-count" id="completed-total-count">0</span>
       </div>
-      <span class="completed-toggle" id="completed-toggle">▼</span>
     </div>
-    <div class="completed-list" id="completed-list">
-      <span class="completed-empty">Nog geen afgeronde projecten.</span>
-    </div>
+    <div class="completed-months-grid" id="completed-months-grid"></div>
   </div>
 </main>
 
@@ -386,12 +379,12 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </div>
     <label>Notitie</label>
     <textarea id="edit-proj-note" placeholder="Interne opmerkingen…"></textarea>
-    <hr class="modal-divider" />
-    <div class="modal-actions" id="edit-proj-actions">
-      <button class="btn btn-danger" style="margin-right:auto;" onclick="deleteProjectFromModal()">Verwijderen</button>
-      <button class="btn" onclick="closeModal('edit-project')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveEditProject()">Opslaan</button>
+    <div id="phase-note-section" style="display:none;">
+      <label>Notitie bij fase-overgang (optioneel)</label>
+      <textarea id="phase-transition-note" placeholder="Wat is er in deze fase gedaan?"></textarea>
     </div>
+    <hr class="modal-divider" />
+    <div class="modal-actions" id="edit-proj-actions"></div>
   </div>
 </div>
 
@@ -399,11 +392,13 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 <div class="modal-backdrop" id="modal-complete">
   <div class="modal">
     <h3>Project afronden</h3>
-    <div class="complete-banner">✅ Dit project wordt verplaatst naar "Afgeronde projecten"</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Weet je zeker dat je <strong id="complete-proj-name"></strong> wilt afronden?</p>
+    <div class="complete-banner">Het project wordt verplaatst naar "Afgeronde projecten"</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">Weet je zeker dat je <strong id="complete-proj-name"></strong> wilt afronden?</p>
+    <label>Afsluitende notitie (optioneel)</label>
+    <textarea id="complete-note" placeholder="Bijv. rapport opgeleverd, klant akkoord…"></textarea>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('complete')">Annuleren</button>
-      <button class="btn btn-success" onclick="confirmComplete()">✅ Afronden</button>
+      <button class="btn btn-success" onclick="confirmComplete()">Afronden</button>
     </div>
   </div>
 </div>
@@ -412,10 +407,22 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 <div class="modal-backdrop" id="modal-reopen">
   <div class="modal">
     <h3>Project heropenen</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Weet je zeker dat je <strong id="reopen-proj-name"></strong> wilt heropenen? Het project gaat terug naar de backlog.</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Weet je zeker dat je <strong id="reopen-proj-name"></strong> wilt heropenen? Het gaat terug naar de backlog.</p>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('reopen')">Annuleren</button>
       <button class="btn btn-dark" onclick="confirmReopen()">Heropenen</button>
+    </div>
+  </div>
+</div>
+
+<!-- History modal -->
+<div class="modal-backdrop history-modal" id="modal-history">
+  <div class="modal">
+    <h3 id="history-proj-title">Fase-geschiedenis</h3>
+    <div class="history-timeline" id="history-timeline"></div>
+    <hr class="modal-divider" style="margin-top:16px;" />
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('history')">Sluiten</button>
     </div>
   </div>
 </div>
@@ -425,7 +432,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
   <div class="modal">
     <h3>Medewerker toevoegen</h3>
     <label>Volledige naam</label>
-    <input type="text" id="emp-name-input" placeholder="bijv. Sara Nguyen" />
+    <input type="text" id="emp-name-input" />
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('employee')">Annuleren</button>
       <button class="btn btn-dark" onclick="saveEmployee()">Toevoegen</button>
@@ -543,6 +550,7 @@ const AVA_COLORS = [
   {bg:'#fce8f2',txt:'#8a1f5c'},{bg:'#e2f4f0',txt:'#0e5c4e'},
 ];
 const BL_DOTS = ['#3a6fd8','#2d9e4f','#d4880f','#c4407a','#6b52e0','#d95728'];
+const NL_MONTHS = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
 
 let backlogs=[], phases=[], employees=[], projects=[];
 let dragId=null;
@@ -551,7 +559,7 @@ let editingPhaseId=null, deletingPhaseId=null;
 let editingBacklogId=null, deletingBacklogId=null;
 let editingProjectId=null, completingProjectId=null, reopeningProjectId=null;
 let activeFilter=null, searchQuery='';
-let completedOpen=true;
+let pendingPhaseId=null, pendingEmpId=null, pendingBacklogId=null;
 
 const hdrs = { apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=representation' };
 
@@ -581,8 +589,6 @@ async function loadAll() {
 function initials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
 function phaseColor(i){ return PHASE_COLORS[i%PHASE_COLORS.length]; }
 function avaColor(i){ return AVA_COLORS[i%AVA_COLORS.length]; }
-
-// active = not completed, in backlog = no phase_id and not completed
 function isActive(p){ return !p.completed; }
 function inBacklog(p){ return !p.phase_id && !p.completed; }
 
@@ -596,6 +602,14 @@ function formatDeadline(d) {
   const label=new Date(d+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
   return { label, diff, overdue:diff<0, soon:diff>=0&&diff<=3 };
 }
+function monthKey(isoDate) {
+  const d=new Date(isoDate);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+function monthLabel(key) {
+  const [y,m]=key.split('-');
+  return `${NL_MONTHS[parseInt(m)-1]} ${y}`;
+}
 function highlight(text) {
   if(!searchQuery) return text;
   const re=new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
@@ -603,9 +617,8 @@ function highlight(text) {
 }
 function cardVisible(proj) {
   if(proj.completed) return false;
-  const s=!searchQuery||proj.name.toLowerCase().includes(searchQuery.toLowerCase());
-  const f=!activeFilter||proj.employee_id===activeFilter;
-  return s&&f;
+  return (!searchQuery||proj.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
+         (!activeFilter||proj.employee_id===activeFilter);
 }
 
 function makeCard(proj, colorObj, isBacklogCard) {
@@ -613,17 +626,14 @@ function makeCard(proj, colorObj, isBacklogCard) {
   const txt = isBacklogCard?'#6b6860':colorObj.txt;
   const bdr = isBacklogCard?'#ccc9be':colorObj.bdr;
   const hidden = cardVisible(proj)?'':'card-hidden';
-
   const dl = proj.deadline?formatDeadline(proj.deadline):null;
-  const dlHtml = dl ? `<span class="card-deadline${dl.overdue?' overdue':dl.soon?' soon':''}">📅 ${dl.label}</span>` : '';
-  const metaHtml = dlHtml ? `<div class="card-meta">${dlHtml}</div>` : '';
-  const noteHtml = proj.note ? `<div class="card-note" title="${proj.note.replace(/"/g,'&quot;')}">${proj.note}</div>` : '';
-  const prioDot = proj.priority==='hoog' ? `<span class="priority-dot-hoog" title="Hoge prioriteit"></span>` : '';
-
+  const dlHtml = dl?`<span class="card-deadline${dl.overdue?' overdue':dl.soon?' soon':''}">📅 ${dl.label}</span>`:'';
+  const metaHtml = dlHtml?`<div class="card-meta">${dlHtml}</div>`:'';
+  const noteHtml = proj.note?`<div class="card-note" title="${proj.note.replace(/"/g,'&quot;')}">${proj.note}</div>`:'';
+  const prioDot = proj.priority==='hoog'?`<span class="priority-dot-hoog" title="Hoge prioriteit"></span>`:'';
   return `<div class="project-card ${hidden}" id="card-${proj.id}" draggable="true"
     style="background:${bg};color:${txt};border-color:${bdr};"
-    ondragstart="onDragStart(event,'${proj.id}')"
-    ondragend="onDragEnd()"
+    ondragstart="onDragStart(event,'${proj.id}')" ondragend="onDragEnd()"
     onclick="openEditProject('${proj.id}',event)">
     <div class="card-top">
       <span class="drag-handle" onclick="event.stopPropagation()">⠿</span>
@@ -636,15 +646,15 @@ function makeCard(proj, colorObj, isBacklogCard) {
 }
 
 function render() {
-  const activeProjects = projects.filter(isActive);
-  const completedProjects = projects.filter(p=>p.completed);
+  const activeProjects=projects.filter(isActive);
+  const completedProjects=projects.filter(p=>p.completed);
 
-  document.getElementById('chip-projects').textContent = activeProjects.length;
-  document.getElementById('chip-employees').textContent = employees.length;
-  document.getElementById('chip-phases').textContent = phases.length;
+  document.getElementById('chip-projects').textContent=activeProjects.length;
+  document.getElementById('chip-employees').textContent=employees.length;
+  document.getElementById('chip-phases').textContent=phases.length;
 
   // filter bar
-  document.getElementById('filter-bar').innerHTML =
+  document.getElementById('filter-bar').innerHTML=
     `<span class="filter-label">Filter:</span>
      <button class="filter-btn${!activeFilter?' active':''}" onclick="setFilter(null)">Iedereen</button>`+
     employees.map((emp,ei)=>{
@@ -655,7 +665,9 @@ function render() {
     }).join('');
 
   // backlogs
-  const blCols = backlogs.map((bl,bi)=>{
+  const row=document.getElementById('backlogs-row');
+  row.style.gridTemplateColumns=`repeat(${backlogs.length},1fr) 100px`;
+  row.innerHTML=backlogs.map((bl,bi)=>{
     const dot=BL_DOTS[bi%BL_DOTS.length];
     const cards=activeProjects.filter(p=>p.backlog_id===bl.id&&inBacklog(p));
     const vis=cards.filter(cardVisible).length;
@@ -672,29 +684,23 @@ function render() {
       </div>
       <div class="backlog-col-cards" id="bl-${bl.id}"
         ondragover="onDragOver(event,null,null,'${bl.id}')"
-        ondragleave="onDragLeave(event)"
-        ondrop="onDrop(event,null,null,'${bl.id}')">
+        ondragleave="onDragLeave(event)" ondrop="onDrop(event,null,null,'${bl.id}')">
         ${cards.length?cards.map(p=>makeCard(p,null,true)).join(''):`<span class="backlog-empty">Leeg</span>`}
       </div>
     </div>`;
-  }).join('');
-
-  const row=document.getElementById('backlogs-row');
-  row.style.gridTemplateColumns=`repeat(${backlogs.length},1fr) 100px`;
-  row.innerHTML=blCols+`<div class="add-backlog-col" onclick="openModal('add-backlog')">
-    <span class="add-backlog-plus">＋</span>
-    <span>Backlog</span>
+  }).join('')+`<div class="add-backlog-col" onclick="openModal('add-backlog')">
+    <span class="add-backlog-plus">＋</span><span>Backlog</span>
   </div>`;
 
-  // determine last phase
-  const lastPhaseId = phases.length>0 ? phases[phases.length-1].id : null;
+  // last phase id
+  const lastPhaseId=phases.length>0?phases[phases.length-1].id:null;
 
   // thead
   document.getElementById('thead-row').innerHTML=`<th>Medewerker</th>`+phases.map((ph,i)=>{
     const c=phaseColor(i);
-    const cnt=activeProjects.filter(p=>p.phase_id===ph.id&&cardVisible(p)).length;
     const isLast=ph.id===lastPhaseId;
-    return `<th${isLast?' class="last-phase-header"':''}>
+    const cnt=activeProjects.filter(p=>p.phase_id===ph.id&&cardVisible(p)).length;
+    return `<th${isLast?' style="background:#fdf3e0;"':''}>
       <div class="phase-header">
         <span class="phase-dot" style="background:${isLast?'#d4880f':c.dot}"></span>
         <span>${ph.name}</span>
@@ -729,8 +735,7 @@ function render() {
           const cards=activeProjects.filter(p=>p.employee_id===emp.id&&p.phase_id===ph.id);
           return `<td><div class="cell-inner"
             ondragover="onDragOver(event,'${ph.id}','${emp.id}',null)"
-            ondragleave="onDragLeave(event)"
-            ondrop="onDrop(event,'${ph.id}','${emp.id}',null)">
+            ondragleave="onDragLeave(event)" ondrop="onDrop(event,'${ph.id}','${emp.id}',null)">
             ${cards.map(p=>makeCard(p,c,false)).join('')}
           </div></td>`;
         }).join('')+`</tr>`;
@@ -739,61 +744,65 @@ function render() {
 
   // stats
   const inBl=activeProjects.filter(inBacklog).length;
-  const urgent=activeProjects.filter(p=>p.priority==='hoog').length;
   document.getElementById('s-total').textContent=activeProjects.length;
   document.getElementById('s-backlog').textContent=inBl;
   document.getElementById('s-active').textContent=activeProjects.length-inBl;
-  document.getElementById('s-urgent').textContent=urgent;
+  document.getElementById('s-urgent').textContent=activeProjects.filter(p=>p.priority==='hoog').length;
 
-  // deadline widget
   const withDl=activeProjects.filter(p=>p.deadline)
     .map(p=>({...p,diff:deadlineDiff(p.deadline)}))
     .sort((a,b)=>a.diff-b.diff).slice(0,7);
-  const dlEl=document.getElementById('deadline-list');
-  dlEl.innerHTML=withDl.length===0
-    ? `<span class="deadline-empty">Geen deadlines ingesteld</span>`
-    : withDl.map(p=>{
-        const d=p.diff;
-        const label=d<0?`${Math.abs(d)}d te laat`:d===0?'Vandaag':`${d}d`;
-        const cls=d<0?'days-overdue':d<=3?'days-soon':'days-ok';
-        return `<div class="deadline-item">
-          <span class="deadline-item-name" title="${p.name}">${p.name}</span>
-          <span class="deadline-item-days ${cls}">${label}</span>
-        </div>`;
-      }).join('');
+  document.getElementById('deadline-list').innerHTML=withDl.length===0
+    ?`<span class="deadline-empty">Geen deadlines ingesteld</span>`
+    :withDl.map(p=>{
+      const d=p.diff;
+      const label=d<0?`${Math.abs(d)}d te laat`:d===0?'Vandaag':`${d}d`;
+      const cls=d<0?'days-overdue':d<=3?'days-soon':'days-ok';
+      return `<div class="deadline-item">
+        <span class="deadline-item-name" title="${p.name}">${p.name}</span>
+        <span class="deadline-item-days ${cls}">${label}</span>
+      </div>`;
+    }).join('');
 
-  // completed section
-  document.getElementById('completed-count').textContent=completedProjects.length;
-  const cl=document.getElementById('completed-list');
-  cl.className='completed-list'+(completedOpen?'':' hidden');
-  document.getElementById('completed-toggle').textContent=completedOpen?'▲':'▼';
-
-  if(completedProjects.length===0){
-    cl.innerHTML=`<span class="completed-empty">Nog geen afgeronde projecten.</span>`;
+  // completed months
+  document.getElementById('completed-total-count').textContent=completedProjects.length;
+  const monthMap={};
+  completedProjects.forEach(p=>{
+    if(!p.completed_at) return;
+    const key=monthKey(p.completed_at);
+    if(!monthMap[key]) monthMap[key]=[];
+    monthMap[key].push(p);
+  });
+  const sortedMonths=Object.keys(monthMap).sort().reverse();
+  const grid=document.getElementById('completed-months-grid');
+  if(sortedMonths.length===0){
+    grid.innerHTML=`<div style="font-size:13px;color:var(--text3);font-style:italic;grid-column:1/-1;padding:4px 0;">Nog geen afgeronde projecten.</div>`;
   } else {
-    const sorted=[...completedProjects].sort((a,b)=>new Date(b.completed_at||0)-new Date(a.completed_at||0));
-    cl.innerHTML=sorted.map(p=>{
-      const dateStr=p.completed_at
-        ? new Date(p.completed_at).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'})
-        : '';
-      return `<div class="completed-item">
-        <span style="font-size:16px;">✅</span>
-        <span class="completed-item-name">${p.name}</span>
-        ${p.note?`<span class="completed-item-note">${p.note}</span>`:''}
-        <span class="completed-item-date">${dateStr}</span>
-        <div class="completed-item-actions">
-          <button class="icon-btn" onclick="openReopen('${p.id}')" title="Heropenen">↩</button>
-          <button class="icon-btn danger" onclick="deleteProject('${p.id}')" title="Verwijderen">🗑</button>
+    grid.innerHTML=sortedMonths.map(key=>{
+      const projs=[...monthMap[key]].sort((a,b)=>new Date(b.completed_at)-new Date(a.completed_at));
+      return `<div class="completed-month-col">
+        <div class="completed-month-header">
+          <div class="completed-month-dot"></div>
+          <span class="completed-month-name">${monthLabel(key)}</span>
+          <span class="completed-month-count">${projs.length}</span>
+        </div>
+        <div class="completed-month-cards">
+          ${projs.map(p=>{
+            const d=new Date(p.completed_at);
+            const dateStr=d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+            return `<div class="completed-card" onclick="openHistory('${p.id}')">
+              <div class="completed-card-top">
+                <span class="completed-card-name">${p.name}</span>
+                <span class="completed-card-date">${dateStr}</span>
+                <button class="completed-card-reopen" onclick="event.stopPropagation();openReopen('${p.id}')" title="Heropenen">↩</button>
+              </div>
+              ${p.note?`<div class="completed-card-note">${p.note}</div>`:''}
+            </div>`;
+          }).join('')}
         </div>
       </div>`;
     }).join('');
   }
-}
-
-function toggleCompleted(){
-  completedOpen=!completedOpen;
-  document.getElementById('completed-list').className='completed-list'+(completedOpen?'':' hidden');
-  document.getElementById('completed-toggle').textContent=completedOpen?'▲':'▼';
 }
 
 // ── Filter & search ──
@@ -827,13 +836,42 @@ async function onDrop(e,phaseId,empId,backlogId){
   if(!proj||proj.completed){ dragId=null; return; }
   const nP=phaseId||null, nE=empId||null, nB=backlogId||null;
   if(proj.phase_id===nP&&proj.employee_id===nE&&proj.backlog_id===nB){ dragId=null; return; }
-  proj.phase_id=nP; proj.employee_id=nE; proj.backlog_id=nB;
+
+  // check if we need a phase-note — open edit modal instead
+  if(nP && nP!==proj.phase_id) {
+    // log history and move
+    await moveProjectWithHistory(proj, nP, nE, nB, null);
+  } else {
+    proj.phase_id=nP; proj.employee_id=nE; proj.backlog_id=nB;
+    render();
+    try {
+      await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${dragId}`);
+      showToast(nP?'Project verplaatst':'Terug naar backlog');
+    } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
+  }
+  dragId=null;
+}
+
+async function moveProjectWithHistory(proj, newPhaseId, newEmpId, newBacklogId, note) {
+  const oldId=proj.id;
+  proj.phase_id=newPhaseId; proj.employee_id=newEmpId; proj.backlog_id=newBacklogId;
   render();
   try {
-    await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${dragId}`);
-    showToast(nP?'Project verplaatst':'Terug naar backlog');
+    await sbFetch('PATCH','projects',{phase_id:newPhaseId,employee_id:newEmpId,backlog_id:newBacklogId},`id=eq.${oldId}`);
+    // log history
+    const ph=phases.find(p=>p.id===newPhaseId);
+    const emp=employees.find(e=>e.id===newEmpId);
+    const histBody={
+      project_id:oldId,
+      phase_id:newPhaseId||null,
+      phase_name:ph?ph.name:(newPhaseId?'Onbekend':'Backlog'),
+      employee_id:newEmpId||null,
+      employee_name:emp?emp.name:null,
+      note:note||null,
+    };
+    await sbFetch('POST','project_history',histBody);
+    showToast('Project verplaatst');
   } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
-  dragId=null;
 }
 
 // ── Modals ──
@@ -845,16 +883,18 @@ async function saveProject(){
   const name=document.getElementById('proj-name').value.trim(); if(!name) return;
   const body={
     name,
-    priority: document.getElementById('proj-priority').value||null,
-    deadline: document.getElementById('proj-deadline').value||null,
-    note: document.getElementById('proj-note').value.trim()||null,
+    priority:document.getElementById('proj-priority').value||null,
+    deadline:document.getElementById('proj-deadline').value||null,
+    note:document.getElementById('proj-note').value.trim()||null,
     phase_id:null, employee_id:null,
-    backlog_id: backlogs[0]?backlogs[0].id:null,
-    completed: false,
+    backlog_id:backlogs[0]?backlogs[0].id:null,
+    completed:false,
   };
   try {
     const [r]=await sbFetch('POST','projects',body);
     projects.push(r);
+    // log creation
+    await sbFetch('POST','project_history',{project_id:r.id,phase_name:'Aangemaakt',employee_id:null,employee_name:null,note:null});
     ['proj-name','proj-deadline','proj-note'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('proj-priority').value='';
     closeModal('project'); render(); showToast('Project toegevoegd');
@@ -872,12 +912,13 @@ function openEditProject(id,e){
   document.getElementById('edit-proj-priority').value=p.priority||'';
   document.getElementById('edit-proj-deadline').value=p.deadline||'';
   document.getElementById('edit-proj-note').value=p.note||'';
+  document.getElementById('phase-transition-note').value='';
+  document.getElementById('phase-note-section').style.display='none';
 
-  // show or hide "Afronden" button
   const actions=document.getElementById('edit-proj-actions');
   actions.innerHTML=`
-    <button class="btn btn-danger" style="margin-right:auto;" onclick="deleteProjectFromModal()">Verwijderen</button>
-    ${isInLastPhase?`<button class="btn btn-success" onclick="openComplete('${id}')">✅ Afronden</button>`:''}
+    <button class="btn btn-danger modal-actions-left" onclick="deleteProjectFromModal()">Verwijderen</button>
+    ${isInLastPhase?`<button class="btn btn-success" onclick="openComplete('${id}')">Afronden</button>`:''}
     <button class="btn" onclick="closeModal('edit-project')">Annuleren</button>
     <button class="btn btn-dark" onclick="saveEditProject()">Opslaan</button>
   `;
@@ -888,9 +929,9 @@ async function saveEditProject(){
   const name=document.getElementById('edit-proj-name').value.trim(); if(!name) return;
   const body={
     name,
-    priority: document.getElementById('edit-proj-priority').value||null,
-    deadline: document.getElementById('edit-proj-deadline').value||null,
-    note: document.getElementById('edit-proj-note').value.trim()||null,
+    priority:document.getElementById('edit-proj-priority').value||null,
+    deadline:document.getElementById('edit-proj-deadline').value||null,
+    note:document.getElementById('edit-proj-note').value.trim()||null,
   };
   try {
     await sbFetch('PATCH','projects',body,`id=eq.${editingProjectId}`);
@@ -906,25 +947,27 @@ async function deleteProject(id){
     render(); showToast('Project verwijderd');
   } catch(e){ showToast('Fout: '+e.message,true); }
 }
-async function deleteProjectFromModal(){
-  closeModal('edit-project');
-  await deleteProject(editingProjectId);
-}
+async function deleteProjectFromModal(){ closeModal('edit-project'); await deleteProject(editingProjectId); }
 
 // Complete
 function openComplete(id){
   completingProjectId=id;
   closeModal('edit-project');
   document.getElementById('complete-proj-name').textContent=projects.find(p=>p.id===id).name;
+  document.getElementById('complete-note').value='';
   openModal('complete');
 }
 async function confirmComplete(){
+  const note=document.getElementById('complete-note').value.trim()||null;
   try {
     const now=new Date().toISOString();
-    await sbFetch('PATCH','projects',{completed:true,completed_at:now,phase_id:null,employee_id:null,backlog_id:null},`id=eq.${completingProjectId}`);
+    await sbFetch('PATCH','projects',{completed:true,completed_at:now,phase_id:null,employee_id:null,backlog_id:null,note:note||projects.find(p=>p.id===completingProjectId).note},`id=eq.${completingProjectId}`);
+    // log history
+    await sbFetch('POST','project_history',{project_id:completingProjectId,phase_name:'Afgerond',employee_id:null,employee_name:null,note:note});
     const p=projects.find(x=>x.id===completingProjectId);
     p.completed=true; p.completed_at=now; p.phase_id=null; p.employee_id=null; p.backlog_id=null;
-    closeModal('complete'); render(); showToast('Project afgerond ✅');
+    if(note) p.note=note;
+    closeModal('complete'); render(); showToast('Project afgerond');
   } catch(e){ showToast('Fout: '+e.message,true); }
 }
 
@@ -938,10 +981,79 @@ async function confirmReopen(){
   try {
     const fb=backlogs[0];
     await sbFetch('PATCH','projects',{completed:false,completed_at:null,backlog_id:fb?fb.id:null},`id=eq.${reopeningProjectId}`);
+    await sbFetch('POST','project_history',{project_id:reopeningProjectId,phase_name:'Heropend',employee_id:null,employee_name:null,note:null});
     const p=projects.find(x=>x.id===reopeningProjectId);
     p.completed=false; p.completed_at=null; p.backlog_id=fb?fb.id:null;
     closeModal('reopen'); render(); showToast('Project heropend');
   } catch(e){ showToast('Fout: '+e.message,true); }
+}
+
+// History
+async function openHistory(id){
+  const p=projects.find(x=>x.id===id);
+  document.getElementById('history-proj-title').textContent=p?p.name:'Fase-geschiedenis';
+  document.getElementById('history-timeline').innerHTML=`<span class="history-empty"><span class="spinner"></span>Laden…</span>`;
+  openModal('history');
+  try {
+    const history=await sbFetch('GET','project_history',null,`project_id=eq.${id}&order=moved_at.asc`);
+    const tl=document.getElementById('history-timeline');
+    if(!history||history.length===0){
+      tl.innerHTML=`<span class="history-empty">Geen geschiedenis beschikbaar.</span>`;
+      return;
+    }
+    tl.innerHTML=history.map((h,i)=>{
+      const isLast=i===history.length-1;
+      const isCompleted=h.phase_name==='Afgerond';
+      const isCreated=h.phase_name==='Aangemaakt';
+      const dt=new Date(h.moved_at);
+      const dateStr=dt.toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'});
+      const timeStr=dt.toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+      return `<div class="history-item">
+        <div class="history-line">
+          <div class="history-dot${isCompleted?' completed':isCreated?' created':''}"></div>
+          ${!isLast?`<div class="history-connector"></div>`:''}
+        </div>
+        <div class="history-content">
+          <div class="history-phase">${h.phase_name}</div>
+          <div class="history-meta">
+            <span>${dateStr} om ${timeStr}</span>
+            ${h.employee_name?`<span class="history-emp">👤 ${h.employee_name}</span>`:''}
+          </div>
+          ${h.note?`<div class="history-note">${h.note}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err){
+    document.getElementById('history-timeline').innerHTML=`<span class="history-empty">Kon geschiedenis niet laden.</span>`;
+  }
+}
+
+// ── Export ──
+function exportToExcel(){
+  const all=[...projects];
+  const rows=[['Naam','Prioriteit','Deadline','Fase','Medewerker','Notitie','Afgerond','Afgerond op']];
+  all.forEach(p=>{
+    const ph=phases.find(x=>x.id===p.phase_id);
+    const emp=employees.find(x=>x.id===p.employee_id);
+    const completedDate=p.completed_at?new Date(p.completed_at).toLocaleDateString('nl-NL'):'';
+    rows.push([
+      p.name,
+      p.priority||'',
+      p.deadline||'',
+      p.completed?'Afgerond':(ph?ph.name:(p.phase_id?'Onbekend':'Backlog')),
+      emp?emp.name:'',
+      p.note||'',
+      p.completed?'Ja':'Nee',
+      completedDate,
+    ]);
+  });
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url;
+  a.download=`planning-export-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Export gedownload');
 }
 
 // Employees
