@@ -29,6 +29,40 @@
 
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
 
+/* ── Password screen ── */
+#pw-screen {
+  position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: var(--surface); border-radius: 14px; border: 1px solid var(--border);
+  padding: 44px 40px; width: 340px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  text-align: center;
+}
+.pw-logo {
+  width: 44px; height: 44px; background: var(--text); border-radius: 50%;
+  margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.pw-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+.pw-sub { font-size: 13px; color: var(--text2); margin-bottom: 28px; }
+.pw-input {
+  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+  padding: 10px 14px; border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  outline: none; transition: border-color 0.15s; text-align: center;
+  letter-spacing: 0.08em; color: var(--text); background: var(--surface2);
+  margin-bottom: 10px;
+}
+.pw-input:focus { border-color: var(--text); background: var(--surface); }
+.pw-error { font-size: 12px; color: var(--red); margin-bottom: 10px; min-height: 18px; }
+.pw-btn {
+  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 11px; background: var(--text); color: #fff; border: none;
+  border-radius: var(--radius-sm); cursor: pointer; transition: background 0.12s;
+}
+.pw-btn:hover { background: #333; }
+
 /* ── Header ── */
 .header {
   background: var(--surface); border-bottom: 1px solid var(--border);
@@ -90,7 +124,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .backlog-col-cards { display: flex; flex-direction: column; gap: 6px; padding: 10px; min-height: 70px; flex: 1; transition: background 0.1s; }
 .backlog-col-cards.drag-over { background: var(--surface2); outline: 2px dashed var(--border2); outline-offset: -3px; border-radius: 0 0 var(--radius) var(--radius); }
 .backlog-empty { font-size: 12px; color: var(--text3); font-style: italic; padding: 4px 2px; }
-.add-backlog-col { background: var(--surface); border: 1.5px dashed var(--border2); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: border-color 0.12s, background 0.12s, box-shadow 0.12s; min-height: 80px; color: var(--text3); font-size: 12px; font-weight: 500; gap: 4px; box-shadow: var(--shadow); padding: 12px; text-align: center; }
+.add-backlog-col { background: var(--surface); border: 1.5px dashed var(--border2); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: border-color 0.12s, background 0.12s; min-height: 80px; color: var(--text3); font-size: 12px; font-weight: 500; gap: 4px; box-shadow: var(--shadow); padding: 12px; text-align: center; }
 .add-backlog-col:hover { border-color: var(--text2); background: var(--surface2); color: var(--text2); }
 .add-backlog-plus { font-size: 20px; line-height: 1; }
 
@@ -166,17 +200,13 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .completed-section-header { display: flex; align-items: center; justify-content: space-between; }
 .completed-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); display: flex; align-items: center; gap: 8px; }
 .completed-total-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 20px; padding: 1px 8px; color: var(--green); }
-
-/* monthly grid — 3 columns */
 .completed-months-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-
 .completed-month-col { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--green-border); }
 .completed-month-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--green-border); background: var(--green-bg); }
 .completed-month-dot { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex-shrink: 0; }
 .completed-month-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green); flex: 1; }
 .completed-month-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: #fff; border: 1px solid var(--green-border); border-radius: 20px; padding: 1px 6px; color: var(--green); }
 .completed-month-cards { display: flex; flex-direction: column; gap: 6px; padding: 10px; }
-
 .completed-card { display: flex; flex-direction: column; gap: 3px; padding: 8px 10px; background: var(--surface2); border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer; transition: box-shadow 0.12s, transform 0.12s; }
 .completed-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
 .completed-card-top { display: flex; align-items: center; gap: 8px; }
@@ -185,7 +215,6 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .completed-card-reopen { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text3); padding: 0 2px; }
 .completed-card:hover .completed-card-reopen { visibility: visible; }
 .completed-card-note { font-size: 11px; color: var(--text2); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 2px; }
-.completed-empty-month { font-size: 12px; color: var(--text3); font-style: italic; }
 
 /* ── Loading ── */
 .loading-row td { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; }
@@ -207,17 +236,16 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--text); }
 .modal textarea { min-height: 60px; line-height: 1.5; }
 .modal-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; flex-wrap: wrap; align-items: center; }
-.modal-actions-left { margin-right: auto; }
 .modal-warning { font-size: 12px; color: var(--text2); background: #fef9ec; border: 1px solid #f5e0a0; border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 14px; line-height: 1.5; }
 .modal-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 16px; }
 .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .input-row > div { display: flex; flex-direction: column; gap: 5px; }
 .input-row input, .input-row select { margin-bottom: 0; }
+.complete-banner { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: var(--green); font-weight: 500; text-align: center; }
 
-/* ── Phase history modal ── */
-.history-modal .modal { width: 460px; }
+/* ── History ── */
 .history-timeline { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
-.history-item { display: flex; gap: 14px; padding-bottom: 16px; position: relative; }
+.history-item { display: flex; gap: 14px; padding-bottom: 16px; }
 .history-item:last-child { padding-bottom: 0; }
 .history-line { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .history-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--text2); border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--border2); flex-shrink: 0; margin-top: 3px; }
@@ -231,9 +259,6 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .history-note { font-size: 11px; color: var(--text2); font-style: italic; margin-top: 4px; background: var(--surface2); border-radius: var(--radius-sm); padding: 5px 8px; border: 1px solid var(--border); }
 .history-empty { font-size: 13px; color: var(--text3); font-style: italic; }
 
-/* complete modal */
-.complete-banner { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: var(--green); font-weight: 500; text-align: center; }
-
 @media (max-width: 900px) {
   .stats-body { grid-template-columns: repeat(2,1fr); }
   .stats-body .stat-card:last-child { grid-column: 1/-1; border-top: 1px solid var(--border); border-right: none; }
@@ -245,6 +270,22 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 </style>
 </head>
 <body>
+
+<!-- ── Password screen ── -->
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-logo">🔒</div>
+    <div class="pw-title">Planning board</div>
+    <div class="pw-sub">Voer het wachtwoord in om door te gaan</div>
+    <input type="password" id="pw-input" class="pw-input" placeholder="Wachtwoord…"
+      onkeydown="if(event.key==='Enter') checkPassword()" />
+    <div class="pw-error" id="pw-error"></div>
+    <button class="pw-btn" onclick="checkPassword()">Inloggen</button>
+  </div>
+</div>
+
+<!-- ── App (hidden until auth) ── -->
+<div id="app" style="display:none;">
 
 <header class="header">
   <div class="header-left">
@@ -287,38 +328,17 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     </table>
   </div>
 
-  <!-- Stats -->
   <div class="stats-section">
     <div class="stats-header">📊 Statistieken</div>
     <div class="stats-body">
-      <div class="stat-card">
-        <div class="stat-label">Totaal</div>
-        <div class="stat-value" id="s-total">–</div>
-        <div class="stat-sub">actieve projecten</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">In backlog</div>
-        <div class="stat-value" id="s-backlog">–</div>
-        <div class="stat-sub">niet toegewezen</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Actief</div>
-        <div class="stat-value" id="s-active">–</div>
-        <div class="stat-sub">in een fase</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Hoge prioriteit</div>
-        <div class="stat-value" id="s-urgent">–</div>
-        <div class="stat-sub">gemarkeerd urgent</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Aankomende deadlines</div>
-        <div class="deadline-list" id="deadline-list"></div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Totaal</div><div class="stat-value" id="s-total">–</div><div class="stat-sub">actieve projecten</div></div>
+      <div class="stat-card"><div class="stat-label">In backlog</div><div class="stat-value" id="s-backlog">–</div><div class="stat-sub">niet toegewezen</div></div>
+      <div class="stat-card"><div class="stat-label">Actief</div><div class="stat-value" id="s-active">–</div><div class="stat-sub">in een fase</div></div>
+      <div class="stat-card"><div class="stat-label">Hoge prioriteit</div><div class="stat-value" id="s-urgent">–</div><div class="stat-sub">gemarkeerd urgent</div></div>
+      <div class="stat-card"><div class="stat-label">Aankomende deadlines</div><div class="deadline-list" id="deadline-list"></div></div>
     </div>
   </div>
 
-  <!-- Completed -->
   <div class="completed-section" id="completed-section">
     <div class="completed-section-header">
       <div class="completed-section-title">
@@ -330,6 +350,8 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
   </div>
 </main>
 
+</div><!-- end #app -->
+
 <!-- New project -->
 <div class="modal-backdrop" id="modal-project">
   <div class="modal">
@@ -337,17 +359,8 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
     <label>Projectnaam</label>
     <input type="text" id="proj-name" placeholder="bijv. IT-Audit Klant X" />
     <div class="input-row">
-      <div>
-        <label>Prioriteit</label>
-        <select id="proj-priority">
-          <option value="">— geen —</option>
-          <option value="hoog">🔴 Hoog</option>
-        </select>
-      </div>
-      <div>
-        <label>Deadline</label>
-        <input type="date" id="proj-deadline" />
-      </div>
+      <div><label>Prioriteit</label><select id="proj-priority"><option value="">— geen —</option><option value="hoog">🔴 Hoog</option></select></div>
+      <div><label>Deadline</label><input type="date" id="proj-deadline" /></div>
     </div>
     <label>Notitie</label>
     <textarea id="proj-note" placeholder="Interne opmerkingen…"></textarea>
@@ -361,34 +374,21 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 <!-- Edit project -->
 <div class="modal-backdrop" id="modal-edit-project">
   <div class="modal">
-    <h3 id="edit-proj-title">Project bewerken</h3>
+    <h3>Project bewerken</h3>
     <label>Projectnaam</label>
     <input type="text" id="edit-proj-name" />
     <div class="input-row">
-      <div>
-        <label>Prioriteit</label>
-        <select id="edit-proj-priority">
-          <option value="">— geen —</option>
-          <option value="hoog">🔴 Hoog</option>
-        </select>
-      </div>
-      <div>
-        <label>Deadline</label>
-        <input type="date" id="edit-proj-deadline" />
-      </div>
+      <div><label>Prioriteit</label><select id="edit-proj-priority"><option value="">— geen —</option><option value="hoog">🔴 Hoog</option></select></div>
+      <div><label>Deadline</label><input type="date" id="edit-proj-deadline" /></div>
     </div>
     <label>Notitie</label>
     <textarea id="edit-proj-note" placeholder="Interne opmerkingen…"></textarea>
-    <div id="phase-note-section" style="display:none;">
-      <label>Notitie bij fase-overgang (optioneel)</label>
-      <textarea id="phase-transition-note" placeholder="Wat is er in deze fase gedaan?"></textarea>
-    </div>
     <hr class="modal-divider" />
     <div class="modal-actions" id="edit-proj-actions"></div>
   </div>
 </div>
 
-<!-- Complete confirm -->
+<!-- Complete -->
 <div class="modal-backdrop" id="modal-complete">
   <div class="modal">
     <h3>Project afronden</h3>
@@ -403,7 +403,7 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
   </div>
 </div>
 
-<!-- Reopen confirm -->
+<!-- Reopen -->
 <div class="modal-backdrop" id="modal-reopen">
   <div class="modal">
     <h3>Project heropenen</h3>
@@ -415,123 +415,63 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
   </div>
 </div>
 
-<!-- History modal -->
-<div class="modal-backdrop history-modal" id="modal-history">
-  <div class="modal">
+<!-- History -->
+<div class="modal-backdrop" id="modal-history">
+  <div class="modal" style="width:460px;">
     <h3 id="history-proj-title">Fase-geschiedenis</h3>
     <div class="history-timeline" id="history-timeline"></div>
     <hr class="modal-divider" style="margin-top:16px;" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('history')">Sluiten</button>
-    </div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal('history')">Sluiten</button></div>
   </div>
 </div>
 
 <!-- Employee modals -->
-<div class="modal-backdrop" id="modal-employee">
-  <div class="modal">
-    <h3>Medewerker toevoegen</h3>
-    <label>Volledige naam</label>
-    <input type="text" id="emp-name-input" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('employee')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveEmployee()">Toevoegen</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-edit-employee">
-  <div class="modal">
-    <h3>Medewerker bewerken</h3>
-    <label>Naam</label>
-    <input type="text" id="edit-emp-name" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('edit-employee')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveEditEmployee()">Opslaan</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-delete-employee">
-  <div class="modal">
-    <h3>Medewerker verwijderen</h3>
-    <div class="modal-warning">⚠️ Dit verwijdert <strong id="del-emp-label"></strong> en zet al hun projecten terug naar de backlog.</div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('delete-employee')">Annuleren</button>
-      <button class="btn btn-danger" onclick="confirmDeleteEmployee()">Verwijderen</button>
-    </div>
-  </div>
-</div>
+<div class="modal-backdrop" id="modal-employee"><div class="modal"><h3>Medewerker toevoegen</h3><label>Volledige naam</label><input type="text" id="emp-name-input" placeholder="bijv. Sara Nguyen" /><div class="modal-actions"><button class="btn" onclick="closeModal('employee')">Annuleren</button><button class="btn btn-dark" onclick="saveEmployee()">Toevoegen</button></div></div></div>
+<div class="modal-backdrop" id="modal-edit-employee"><div class="modal"><h3>Medewerker bewerken</h3><label>Naam</label><input type="text" id="edit-emp-name" /><div class="modal-actions"><button class="btn" onclick="closeModal('edit-employee')">Annuleren</button><button class="btn btn-dark" onclick="saveEditEmployee()">Opslaan</button></div></div></div>
+<div class="modal-backdrop" id="modal-delete-employee"><div class="modal"><h3>Medewerker verwijderen</h3><div class="modal-warning">⚠️ Dit verwijdert <strong id="del-emp-label"></strong> en zet al hun projecten terug naar de backlog.</div><div class="modal-actions"><button class="btn" onclick="closeModal('delete-employee')">Annuleren</button><button class="btn btn-danger" onclick="confirmDeleteEmployee()">Verwijderen</button></div></div></div>
 
 <!-- Phase modals -->
-<div class="modal-backdrop" id="modal-phase">
-  <div class="modal">
-    <h3>Fase toevoegen</h3>
-    <label>Naam</label>
-    <input type="text" id="phase-name-input" placeholder="bijv. Fieldwork" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('phase')">Annuleren</button>
-      <button class="btn btn-dark" onclick="savePhase()">Toevoegen</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-edit-phase">
-  <div class="modal">
-    <h3>Fase hernoemen</h3>
-    <label>Naam</label>
-    <input type="text" id="edit-phase-name" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('edit-phase')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveEditPhase()">Opslaan</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-delete-phase">
-  <div class="modal">
-    <h3>Fase verwijderen</h3>
-    <div class="modal-warning">⚠️ Het verwijderen van <strong id="del-phase-label"></strong> zet alle projecten in deze fase terug naar de backlog.</div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('delete-phase')">Annuleren</button>
-      <button class="btn btn-danger" onclick="confirmDeletePhase()">Verwijderen</button>
-    </div>
-  </div>
-</div>
+<div class="modal-backdrop" id="modal-phase"><div class="modal"><h3>Fase toevoegen</h3><label>Naam</label><input type="text" id="phase-name-input" placeholder="bijv. Fieldwork" /><div class="modal-actions"><button class="btn" onclick="closeModal('phase')">Annuleren</button><button class="btn btn-dark" onclick="savePhase()">Toevoegen</button></div></div></div>
+<div class="modal-backdrop" id="modal-edit-phase"><div class="modal"><h3>Fase hernoemen</h3><label>Naam</label><input type="text" id="edit-phase-name" /><div class="modal-actions"><button class="btn" onclick="closeModal('edit-phase')">Annuleren</button><button class="btn btn-dark" onclick="saveEditPhase()">Opslaan</button></div></div></div>
+<div class="modal-backdrop" id="modal-delete-phase"><div class="modal"><h3>Fase verwijderen</h3><div class="modal-warning">⚠️ Het verwijderen van <strong id="del-phase-label"></strong> zet alle projecten in deze fase terug naar de backlog.</div><div class="modal-actions"><button class="btn" onclick="closeModal('delete-phase')">Annuleren</button><button class="btn btn-danger" onclick="confirmDeletePhase()">Verwijderen</button></div></div></div>
 
 <!-- Backlog modals -->
-<div class="modal-backdrop" id="modal-edit-backlog">
-  <div class="modal">
-    <h3>Backlog hernoemen</h3>
-    <label>Naam</label>
-    <input type="text" id="edit-backlog-name" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('edit-backlog')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveEditBacklog()">Opslaan</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-add-backlog">
-  <div class="modal">
-    <h3>Backlog toevoegen</h3>
-    <label>Naam</label>
-    <input type="text" id="add-backlog-name" placeholder="bijv. September 2025" />
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('add-backlog')">Annuleren</button>
-      <button class="btn btn-dark" onclick="saveAddBacklog()">Toevoegen</button>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop" id="modal-delete-backlog">
-  <div class="modal">
-    <h3>Backlog verwijderen</h3>
-    <div class="modal-warning">⚠️ Verwijderen van <strong id="del-backlog-label"></strong> zet alle projecten hierin naar de eerste backlog.</div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('delete-backlog')">Annuleren</button>
-      <button class="btn btn-danger" onclick="confirmDeleteBacklog()">Verwijderen</button>
-    </div>
-  </div>
-</div>
+<div class="modal-backdrop" id="modal-edit-backlog"><div class="modal"><h3>Backlog hernoemen</h3><label>Naam</label><input type="text" id="edit-backlog-name" /><div class="modal-actions"><button class="btn" onclick="closeModal('edit-backlog')">Annuleren</button><button class="btn btn-dark" onclick="saveEditBacklog()">Opslaan</button></div></div></div>
+<div class="modal-backdrop" id="modal-add-backlog"><div class="modal"><h3>Backlog toevoegen</h3><label>Naam</label><input type="text" id="add-backlog-name" placeholder="bijv. September 2025" /><div class="modal-actions"><button class="btn" onclick="closeModal('add-backlog')">Annuleren</button><button class="btn btn-dark" onclick="saveAddBacklog()">Toevoegen</button></div></div></div>
+<div class="modal-backdrop" id="modal-delete-backlog"><div class="modal"><h3>Backlog verwijderen</h3><div class="modal-warning">⚠️ Verwijderen van <strong id="del-backlog-label"></strong> zet alle projecten hierin naar de eerste backlog.</div><div class="modal-actions"><button class="btn" onclick="closeModal('delete-backlog')">Annuleren</button><button class="btn btn-danger" onclick="confirmDeleteBacklog()">Verwijderen</button></div></div></div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+// ── Password ──
+const PASSWORD = 'Govers';
+
+function checkPassword() {
+  const val = document.getElementById('pw-input').value;
+  const err = document.getElementById('pw-error');
+  if(val === PASSWORD) {
+    sessionStorage.setItem('pb_auth','1');
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } else {
+    err.textContent = 'Onjuist wachtwoord, probeer het opnieuw.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function initAuth() {
+  if(sessionStorage.getItem('pb_auth') === '1') {
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } else {
+    setTimeout(() => document.getElementById('pw-input').focus(), 100);
+  }
+}
+
+// ── Supabase ──
 const SUPABASE_URL = 'https://tlvleorfhetvftnvjnht.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsdmxlb3JmaGV0dmZ0bnZqbmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTkxNDMsImV4cCI6MjA5MjkzNTE0M30.fALPAYdOaEiiwUCpgER9R4RYUNKW0TQTP3KFXne1fKY';
 
@@ -559,7 +499,6 @@ let editingPhaseId=null, deletingPhaseId=null;
 let editingBacklogId=null, deletingBacklogId=null;
 let editingProjectId=null, completingProjectId=null, reopeningProjectId=null;
 let activeFilter=null, searchQuery='';
-let pendingPhaseId=null, pendingEmpId=null, pendingBacklogId=null;
 
 const hdrs = { apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, 'Content-Type':'application/json', Prefer:'return=representation' };
 
@@ -692,7 +631,6 @@ function render() {
     <span class="add-backlog-plus">＋</span><span>Backlog</span>
   </div>`;
 
-  // last phase id
   const lastPhaseId=phases.length>0?phases[phases.length-1].id:null;
 
   // thead
@@ -836,42 +774,25 @@ async function onDrop(e,phaseId,empId,backlogId){
   if(!proj||proj.completed){ dragId=null; return; }
   const nP=phaseId||null, nE=empId||null, nB=backlogId||null;
   if(proj.phase_id===nP&&proj.employee_id===nE&&proj.backlog_id===nB){ dragId=null; return; }
-
-  // check if we need a phase-note — open edit modal instead
-  if(nP && nP!==proj.phase_id) {
-    // log history and move
-    await moveProjectWithHistory(proj, nP, nE, nB, null);
-  } else {
-    proj.phase_id=nP; proj.employee_id=nE; proj.backlog_id=nB;
-    render();
-    try {
-      await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${dragId}`);
-      showToast(nP?'Project verplaatst':'Terug naar backlog');
-    } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
-  }
-  dragId=null;
-}
-
-async function moveProjectWithHistory(proj, newPhaseId, newEmpId, newBacklogId, note) {
-  const oldId=proj.id;
-  proj.phase_id=newPhaseId; proj.employee_id=newEmpId; proj.backlog_id=newBacklogId;
+  const oldPhaseId=proj.phase_id;
+  proj.phase_id=nP; proj.employee_id=nE; proj.backlog_id=nB;
   render();
   try {
-    await sbFetch('PATCH','projects',{phase_id:newPhaseId,employee_id:newEmpId,backlog_id:newBacklogId},`id=eq.${oldId}`);
-    // log history
-    const ph=phases.find(p=>p.id===newPhaseId);
-    const emp=employees.find(e=>e.id===newEmpId);
-    const histBody={
-      project_id:oldId,
-      phase_id:newPhaseId||null,
-      phase_name:ph?ph.name:(newPhaseId?'Onbekend':'Backlog'),
-      employee_id:newEmpId||null,
-      employee_name:emp?emp.name:null,
-      note:note||null,
-    };
-    await sbFetch('POST','project_history',histBody);
-    showToast('Project verplaatst');
+    await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${dragId}`);
+    if(nP && nP!==oldPhaseId) {
+      const ph=phases.find(p=>p.id===nP);
+      const emp=employees.find(e=>e.id===nE);
+      await sbFetch('POST','project_history',{
+        project_id:dragId, phase_id:nP,
+        phase_name:ph?ph.name:'Onbekend',
+        employee_id:nE||null,
+        employee_name:emp?emp.name:null,
+        note:null,
+      });
+    }
+    showToast(nP?'Project verplaatst':'Terug naar backlog');
   } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
+  dragId=null;
 }
 
 // ── Modals ──
@@ -882,18 +803,15 @@ function closeModal(t){ document.getElementById(`modal-${t}`).classList.remove('
 async function saveProject(){
   const name=document.getElementById('proj-name').value.trim(); if(!name) return;
   const body={
-    name,
-    priority:document.getElementById('proj-priority').value||null,
+    name, priority:document.getElementById('proj-priority').value||null,
     deadline:document.getElementById('proj-deadline').value||null,
     note:document.getElementById('proj-note').value.trim()||null,
     phase_id:null, employee_id:null,
-    backlog_id:backlogs[0]?backlogs[0].id:null,
-    completed:false,
+    backlog_id:backlogs[0]?backlogs[0].id:null, completed:false,
   };
   try {
     const [r]=await sbFetch('POST','projects',body);
     projects.push(r);
-    // log creation
     await sbFetch('POST','project_history',{project_id:r.id,phase_name:'Aangemaakt',employee_id:null,employee_name:null,note:null});
     ['proj-name','proj-deadline','proj-note'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('proj-priority').value='';
@@ -907,17 +825,12 @@ function openEditProject(id,e){
   const p=projects.find(x=>x.id===id);
   const lastPhaseId=phases.length>0?phases[phases.length-1].id:null;
   const isInLastPhase=p.phase_id&&p.phase_id===lastPhaseId;
-
   document.getElementById('edit-proj-name').value=p.name;
   document.getElementById('edit-proj-priority').value=p.priority||'';
   document.getElementById('edit-proj-deadline').value=p.deadline||'';
   document.getElementById('edit-proj-note').value=p.note||'';
-  document.getElementById('phase-transition-note').value='';
-  document.getElementById('phase-note-section').style.display='none';
-
-  const actions=document.getElementById('edit-proj-actions');
-  actions.innerHTML=`
-    <button class="btn btn-danger modal-actions-left" onclick="deleteProjectFromModal()">Verwijderen</button>
+  document.getElementById('edit-proj-actions').innerHTML=`
+    <button class="btn btn-danger" style="margin-right:auto;" onclick="deleteProjectFromModal()">Verwijderen</button>
     ${isInLastPhase?`<button class="btn btn-success" onclick="openComplete('${id}')">Afronden</button>`:''}
     <button class="btn" onclick="closeModal('edit-project')">Annuleren</button>
     <button class="btn btn-dark" onclick="saveEditProject()">Opslaan</button>
@@ -928,8 +841,7 @@ function openEditProject(id,e){
 async function saveEditProject(){
   const name=document.getElementById('edit-proj-name').value.trim(); if(!name) return;
   const body={
-    name,
-    priority:document.getElementById('edit-proj-priority').value||null,
+    name, priority:document.getElementById('edit-proj-priority').value||null,
     deadline:document.getElementById('edit-proj-deadline').value||null,
     note:document.getElementById('edit-proj-note').value.trim()||null,
   };
@@ -961,10 +873,9 @@ async function confirmComplete(){
   const note=document.getElementById('complete-note').value.trim()||null;
   try {
     const now=new Date().toISOString();
-    await sbFetch('PATCH','projects',{completed:true,completed_at:now,phase_id:null,employee_id:null,backlog_id:null,note:note||projects.find(p=>p.id===completingProjectId).note},`id=eq.${completingProjectId}`);
-    // log history
-    await sbFetch('POST','project_history',{project_id:completingProjectId,phase_name:'Afgerond',employee_id:null,employee_name:null,note:note});
     const p=projects.find(x=>x.id===completingProjectId);
+    await sbFetch('PATCH','projects',{completed:true,completed_at:now,phase_id:null,employee_id:null,backlog_id:null,note:note||p.note},`id=eq.${completingProjectId}`);
+    await sbFetch('POST','project_history',{project_id:completingProjectId,phase_name:'Afgerond',employee_id:null,employee_name:null,note:note});
     p.completed=true; p.completed_at=now; p.phase_id=null; p.employee_id=null; p.backlog_id=null;
     if(note) p.note=note;
     closeModal('complete'); render(); showToast('Project afgerond');
@@ -997,10 +908,7 @@ async function openHistory(id){
   try {
     const history=await sbFetch('GET','project_history',null,`project_id=eq.${id}&order=moved_at.asc`);
     const tl=document.getElementById('history-timeline');
-    if(!history||history.length===0){
-      tl.innerHTML=`<span class="history-empty">Geen geschiedenis beschikbaar.</span>`;
-      return;
-    }
+    if(!history||history.length===0){ tl.innerHTML=`<span class="history-empty">Geen geschiedenis beschikbaar.</span>`; return; }
     tl.innerHTML=history.map((h,i)=>{
       const isLast=i===history.length-1;
       const isCompleted=h.phase_name==='Afgerond';
@@ -1023,28 +931,20 @@ async function openHistory(id){
         </div>
       </div>`;
     }).join('');
-  } catch(err){
-    document.getElementById('history-timeline').innerHTML=`<span class="history-empty">Kon geschiedenis niet laden.</span>`;
-  }
+  } catch(err){ document.getElementById('history-timeline').innerHTML=`<span class="history-empty">Kon geschiedenis niet laden.</span>`; }
 }
 
-// ── Export ──
+// Export
 function exportToExcel(){
-  const all=[...projects];
   const rows=[['Naam','Prioriteit','Deadline','Fase','Medewerker','Notitie','Afgerond','Afgerond op']];
-  all.forEach(p=>{
+  projects.forEach(p=>{
     const ph=phases.find(x=>x.id===p.phase_id);
     const emp=employees.find(x=>x.id===p.employee_id);
-    const completedDate=p.completed_at?new Date(p.completed_at).toLocaleDateString('nl-NL'):'';
     rows.push([
-      p.name,
-      p.priority||'',
-      p.deadline||'',
+      p.name, p.priority||'', p.deadline||'',
       p.completed?'Afgerond':(ph?ph.name:(p.phase_id?'Onbekend':'Backlog')),
-      emp?emp.name:'',
-      p.note||'',
-      p.completed?'Ja':'Nee',
-      completedDate,
+      emp?emp.name:'', p.note||'', p.completed?'Ja':'Nee',
+      p.completed_at?new Date(p.completed_at).toLocaleDateString('nl-NL'):'',
     ]);
   });
   const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
@@ -1057,106 +957,29 @@ function exportToExcel(){
 }
 
 // Employees
-async function saveEmployee(){
-  const name=document.getElementById('emp-name-input').value.trim(); if(!name) return;
-  try {
-    const [r]=await sbFetch('POST','employees',{name});
-    employees.push(r); document.getElementById('emp-name-input').value='';
-    closeModal('employee'); render(); showToast('Medewerker toegevoegd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function saveEmployee(){ const name=document.getElementById('emp-name-input').value.trim(); if(!name) return; try { const [r]=await sbFetch('POST','employees',{name}); employees.push(r); document.getElementById('emp-name-input').value=''; closeModal('employee'); render(); showToast('Medewerker toegevoegd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openEditEmployee(id){ editingEmpId=id; document.getElementById('edit-emp-name').value=employees.find(e=>e.id===id).name; openModal('edit-employee'); }
-async function saveEditEmployee(){
-  const name=document.getElementById('edit-emp-name').value.trim(); if(!name) return;
-  try {
-    await sbFetch('PATCH','employees',{name},`id=eq.${editingEmpId}`);
-    employees.find(e=>e.id===editingEmpId).name=name;
-    closeModal('edit-employee'); render(); showToast('Medewerker bijgewerkt');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function saveEditEmployee(){ const name=document.getElementById('edit-emp-name').value.trim(); if(!name) return; try { await sbFetch('PATCH','employees',{name},`id=eq.${editingEmpId}`); employees.find(e=>e.id===editingEmpId).name=name; closeModal('edit-employee'); render(); showToast('Medewerker bijgewerkt'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openDeleteEmployee(id){ deletingEmpId=id; document.getElementById('del-emp-label').textContent=employees.find(e=>e.id===id).name; openModal('delete-employee'); }
-async function confirmDeleteEmployee(){
-  try {
-    const fb=backlogs[0];
-    const ep=projects.filter(p=>p.employee_id===deletingEmpId);
-    await Promise.all(ep.map(p=>sbFetch('PATCH','projects',{employee_id:null,phase_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`)));
-    ep.forEach(p=>{ p.employee_id=null; p.phase_id=null; p.backlog_id=fb?fb.id:null; });
-    await fetch(`${SUPABASE_URL}/rest/v1/employees?id=eq.${deletingEmpId}`,{method:'DELETE',headers:hdrs});
-    employees=employees.filter(e=>e.id!==deletingEmpId);
-    if(activeFilter===deletingEmpId) activeFilter=null;
-    closeModal('delete-employee'); render(); showToast('Medewerker verwijderd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function confirmDeleteEmployee(){ try { const fb=backlogs[0]; const ep=projects.filter(p=>p.employee_id===deletingEmpId); await Promise.all(ep.map(p=>sbFetch('PATCH','projects',{employee_id:null,phase_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`))); ep.forEach(p=>{ p.employee_id=null; p.phase_id=null; p.backlog_id=fb?fb.id:null; }); await fetch(`${SUPABASE_URL}/rest/v1/employees?id=eq.${deletingEmpId}`,{method:'DELETE',headers:hdrs}); employees=employees.filter(e=>e.id!==deletingEmpId); if(activeFilter===deletingEmpId) activeFilter=null; closeModal('delete-employee'); render(); showToast('Medewerker verwijderd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 
 // Phases
-async function savePhase(){
-  const name=document.getElementById('phase-name-input').value.trim(); if(!name) return;
-  try {
-    const [r]=await sbFetch('POST','phases',{name,position:phases.length+1});
-    phases.push(r); document.getElementById('phase-name-input').value='';
-    closeModal('phase'); render(); showToast('Fase toegevoegd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function savePhase(){ const name=document.getElementById('phase-name-input').value.trim(); if(!name) return; try { const [r]=await sbFetch('POST','phases',{name,position:phases.length+1}); phases.push(r); document.getElementById('phase-name-input').value=''; closeModal('phase'); render(); showToast('Fase toegevoegd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openEditPhase(id){ editingPhaseId=id; document.getElementById('edit-phase-name').value=phases.find(p=>p.id===id).name; openModal('edit-phase'); }
-async function saveEditPhase(){
-  const name=document.getElementById('edit-phase-name').value.trim(); if(!name) return;
-  try {
-    await sbFetch('PATCH','phases',{name},`id=eq.${editingPhaseId}`);
-    phases.find(p=>p.id===editingPhaseId).name=name;
-    closeModal('edit-phase'); render(); showToast('Fase hernoemd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function saveEditPhase(){ const name=document.getElementById('edit-phase-name').value.trim(); if(!name) return; try { await sbFetch('PATCH','phases',{name},`id=eq.${editingPhaseId}`); phases.find(p=>p.id===editingPhaseId).name=name; closeModal('edit-phase'); render(); showToast('Fase hernoemd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openDeletePhase(id){ deletingPhaseId=id; document.getElementById('del-phase-label').textContent=phases.find(p=>p.id===id).name; openModal('delete-phase'); }
-async function confirmDeletePhase(){
-  try {
-    const fb=backlogs[0];
-    const pp=projects.filter(p=>p.phase_id===deletingPhaseId);
-    await Promise.all(pp.map(p=>sbFetch('PATCH','projects',{phase_id:null,employee_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`)));
-    pp.forEach(p=>{ p.phase_id=null; p.employee_id=null; p.backlog_id=fb?fb.id:null; });
-    await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`,{method:'DELETE',headers:hdrs});
-    phases=phases.filter(p=>p.id!==deletingPhaseId);
-    closeModal('delete-phase'); render(); showToast('Fase verwijderd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function confirmDeletePhase(){ try { const fb=backlogs[0]; const pp=projects.filter(p=>p.phase_id===deletingPhaseId); await Promise.all(pp.map(p=>sbFetch('PATCH','projects',{phase_id:null,employee_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`))); pp.forEach(p=>{ p.phase_id=null; p.employee_id=null; p.backlog_id=fb?fb.id:null; }); await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`,{method:'DELETE',headers:hdrs}); phases=phases.filter(p=>p.id!==deletingPhaseId); closeModal('delete-phase'); render(); showToast('Fase verwijderd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 
 // Backlogs
 function openEditBacklog(id){ editingBacklogId=id; document.getElementById('edit-backlog-name').value=backlogs.find(b=>b.id===id).name; openModal('edit-backlog'); }
-async function saveEditBacklog(){
-  const name=document.getElementById('edit-backlog-name').value.trim(); if(!name) return;
-  try {
-    await sbFetch('PATCH','backlogs',{name},`id=eq.${editingBacklogId}`);
-    backlogs.find(b=>b.id===editingBacklogId).name=name;
-    closeModal('edit-backlog'); render(); showToast('Backlog hernoemd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
-async function saveAddBacklog(){
-  const name=document.getElementById('add-backlog-name').value.trim(); if(!name) return;
-  try {
-    const [r]=await sbFetch('POST','backlogs',{name,position:backlogs.length+1});
-    backlogs.push(r); document.getElementById('add-backlog-name').value='';
-    closeModal('add-backlog'); render(); showToast('Backlog toegevoegd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function saveEditBacklog(){ const name=document.getElementById('edit-backlog-name').value.trim(); if(!name) return; try { await sbFetch('PATCH','backlogs',{name},`id=eq.${editingBacklogId}`); backlogs.find(b=>b.id===editingBacklogId).name=name; closeModal('edit-backlog'); render(); showToast('Backlog hernoemd'); } catch(e){ showToast('Fout: '+e.message,true); } }
+async function saveAddBacklog(){ const name=document.getElementById('add-backlog-name').value.trim(); if(!name) return; try { const [r]=await sbFetch('POST','backlogs',{name,position:backlogs.length+1}); backlogs.push(r); document.getElementById('add-backlog-name').value=''; closeModal('add-backlog'); render(); showToast('Backlog toegevoegd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openDeleteBacklog(id){ deletingBacklogId=id; document.getElementById('del-backlog-label').textContent=backlogs.find(b=>b.id===id).name; openModal('delete-backlog'); }
-async function confirmDeleteBacklog(){
-  try {
-    const fb=backlogs.find(b=>b.id!==deletingBacklogId);
-    const bp=projects.filter(p=>p.backlog_id===deletingBacklogId);
-    await Promise.all(bp.map(p=>sbFetch('PATCH','projects',{backlog_id:fb?fb.id:null},`id=eq.${p.id}`)));
-    bp.forEach(p=>{ p.backlog_id=fb?fb.id:null; });
-    await fetch(`${SUPABASE_URL}/rest/v1/backlogs?id=eq.${deletingBacklogId}`,{method:'DELETE',headers:hdrs});
-    backlogs=backlogs.filter(b=>b.id!==deletingBacklogId);
-    closeModal('delete-backlog'); render(); showToast('Backlog verwijderd');
-  } catch(e){ showToast('Fout: '+e.message,true); }
-}
+async function confirmDeleteBacklog(){ try { const fb=backlogs.find(b=>b.id!==deletingBacklogId); const bp=projects.filter(p=>p.backlog_id===deletingBacklogId); await Promise.all(bp.map(p=>sbFetch('PATCH','projects',{backlog_id:fb?fb.id:null},`id=eq.${p.id}`))); bp.forEach(p=>{ p.backlog_id=fb?fb.id:null; }); await fetch(`${SUPABASE_URL}/rest/v1/backlogs?id=eq.${deletingBacklogId}`,{method:'DELETE',headers:hdrs}); backlogs=backlogs.filter(b=>b.id!==deletingBacklogId); closeModal('delete-backlog'); render(); showToast('Backlog verwijderd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 
 // Toast
 let toastTimer;
-function showToast(msg,isError=false){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast show'+(isError?' error':'');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
-}
+function showToast(msg,isError=false){ const t=document.getElementById('toast'); t.textContent=msg; t.className='toast show'+(isError?' error':''); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800); }
 
 document.querySelectorAll('.modal-backdrop').forEach(el=>{
   el.addEventListener('click',e=>{ if(e.target===el) el.classList.remove('open'); });
@@ -1171,7 +994,7 @@ Object.entries(enterMap).forEach(([id,fn])=>{
   document.getElementById(id).addEventListener('keydown',e=>{ if(e.key==='Enter') fn(); });
 });
 
-loadAll();
+initAuth();
 </script>
 </body>
 </html>
