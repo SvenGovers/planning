@@ -116,6 +116,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .backlogs-row { display: grid; gap: 12px; }
 .backlog-col { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
 .backlog-col-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+.backlog-col-header[draggable="true"] { cursor: grab; user-select: none; }
+.backlog-col-header[draggable="true"]:active { cursor: grabbing; }
+.backlog-col.dragging-backlog { opacity: 0.45; }
+.backlog-col.backlog-drop-before { box-shadow: -3px 0 0 var(--accent), var(--shadow); }
+.backlog-col.backlog-drop-after { box-shadow: 3px 0 0 var(--accent), var(--shadow); }
+
 .backlog-col-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .backlog-col-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .backlog-col-count { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1px 6px; color: var(--text3); }
@@ -497,6 +503,7 @@ const NL_MONTHS = ['januari','februari','maart','april','mei','juni','juli','aug
 
 let backlogs=[], phases=[], employees=[], projects=[];
 let dragId=null;
+let backlogDragId=null;
 let editingEmpId=null, deletingEmpId=null;
 let editingPhaseId=null, deletingPhaseId=null;
 let editingBacklogId=null, deletingBacklogId=null;
@@ -619,8 +626,13 @@ function render() {
     const cards=activeProjects.filter(p=>p.backlog_id===bl.id&&inBacklog(p));
     const vis=cards.filter(cardVisible).length;
     const canDel=backlogs.length>1;
-    return `<div class="backlog-col">
-      <div class="backlog-col-header">
+    return `<div class="backlog-col" data-backlog-id="${bl.id}">
+      <div class="backlog-col-header" draggable="true"
+        ondragstart="onBacklogDragStart(event,'${bl.id}')"
+        ondragover="onBacklogDragOver(event,'${bl.id}')"
+        ondragleave="onBacklogDragLeave(event)"
+        ondrop="onBacklogDrop(event,'${bl.id}')"
+        ondragend="onBacklogDragEnd()">
         <div class="backlog-col-dot" style="background:${dot}"></div>
         <span class="backlog-col-name">${bl.name}</span>
         <div class="backlog-col-actions">
@@ -649,7 +661,7 @@ function render() {
     return `<th${isLast?' style="background:#fdf3e0;"':''}>
       <div class="phase-header">
         <span class="phase-dot" style="background:${isLast?'#d4880f':c.dot}"></span>
-        <span>${ph.name}</span>
+        <span>${i+1}. ${ph.name}</span>
         <div class="phase-actions">
           <button class="icon-btn" onclick="openEditPhase('${ph.id}')" title="Hernoemen">✎</button>
           <button class="icon-btn danger" onclick="openDeletePhase('${ph.id}')" title="Verwijderen">🗑</button>
@@ -802,6 +814,79 @@ function onDragEnd(){
   if(dragId){ const el=document.getElementById('card-'+dragId); if(el) el.classList.remove('dragging'); }
   document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
 }
+function clearBacklogDragStyles(){
+  document.querySelectorAll('.backlog-col').forEach(el=>{
+    el.classList.remove('dragging-backlog','backlog-drop-before','backlog-drop-after');
+  });
+}
+
+function onBacklogDragStart(e,id){
+  if(e.target.closest('button')){ e.preventDefault(); return; }
+  backlogDragId=id;
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',id);
+  const col=e.target.closest('.backlog-col');
+  if(col) col.classList.add('dragging-backlog');
+}
+
+function onBacklogDragOver(e,targetId){
+  if(!backlogDragId || backlogDragId===targetId) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const header=e.currentTarget;
+  const rect=header.getBoundingClientRect();
+  const before=e.clientX < rect.left + rect.width/2;
+  const col=header.closest('.backlog-col');
+
+  clearBacklogDragStyles();
+  if(col) col.classList.add(before?'backlog-drop-before':'backlog-drop-after');
+}
+
+function onBacklogDragLeave(e){
+  const col=e.currentTarget.closest('.backlog-col');
+  if(col) col.classList.remove('backlog-drop-before','backlog-drop-after');
+}
+
+async function onBacklogDrop(e,targetId){
+  if(!backlogDragId || backlogDragId===targetId) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const header=e.currentTarget;
+  const rect=header.getBoundingClientRect();
+  const before=e.clientX < rect.left + rect.width/2;
+
+  const fromIndex=backlogs.findIndex(b=>b.id===backlogDragId);
+  let targetIndex=backlogs.findIndex(b=>b.id===targetId);
+  if(fromIndex===-1 || targetIndex===-1) return;
+
+  const [moved]=backlogs.splice(fromIndex,1);
+  if(fromIndex<targetIndex) targetIndex--;
+  if(!before) targetIndex++;
+  backlogs.splice(targetIndex,0,moved);
+
+  try{
+    await Promise.all(backlogs.map((b,index)=>
+      sbFetch('PATCH','backlogs',{position:index+1},`id=eq.${b.id}`)
+    ));
+    backlogs.forEach((b,index)=>b.position=index+1);
+    render();
+    showToast('Backlog volgorde bijgewerkt');
+  }catch(err){
+    await loadData();
+    showToast('Fout bij wijzigen van de backlogvolgorde: '+err.message,true);
+  }finally{
+    backlogDragId=null;
+    clearBacklogDragStyles();
+  }
+}
+
+function onBacklogDragEnd(){
+  backlogDragId=null;
+  clearBacklogDragStyles();
+}
+
 function onDragOver(e,phaseId,empId,backlogId){
   e.preventDefault(); e.dataTransfer.dropEffect='move';
   const zone=e.currentTarget;
@@ -1024,11 +1109,60 @@ function openDeleteEmployee(id){ deletingEmpId=id; document.getElementById('del-
 async function confirmDeleteEmployee(){ try { const fb=backlogs[0]; const ep=projects.filter(p=>p.employee_id===deletingEmpId); await Promise.all(ep.map(p=>sbFetch('PATCH','projects',{employee_id:null,phase_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`))); ep.forEach(p=>{ p.employee_id=null; p.phase_id=null; p.backlog_id=fb?fb.id:null; }); await fetch(`${SUPABASE_URL}/rest/v1/employees?id=eq.${deletingEmpId}`,{method:'DELETE',headers:hdrs}); employees=employees.filter(e=>e.id!==deletingEmpId); if(activeFilter===deletingEmpId) activeFilter=null; closeModal('delete-employee'); render(); showToast('Medewerker verwijderd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 
 // Phases
-async function savePhase(){ const name=document.getElementById('phase-name-input').value.trim(); if(!name) return; try { const [r]=await sbFetch('POST','phases',{name,position:phases.length+1}); phases.push(r); document.getElementById('phase-name-input').value=''; closeModal('phase'); render(); showToast('Fase toegevoegd'); } catch(e){ showToast('Fout: '+e.message,true); } }
+async function savePhase(){
+  const name=document.getElementById('phase-name-input').value.trim();
+  if(!name) return;
+  try {
+    const nextPosition=phases.length+1;
+    const [r]=await sbFetch('POST','phases',{name,position:nextPosition});
+    phases.push(r);
+    phases.sort((a,b)=>a.position-b.position);
+    document.getElementById('phase-name-input').value='';
+    closeModal('phase');
+    render();
+    showToast('Fase toegevoegd');
+  } catch(e){ showToast('Fout: '+e.message,true); }
+}
 function openEditPhase(id){ editingPhaseId=id; document.getElementById('edit-phase-name').value=phases.find(p=>p.id===id).name; openModal('edit-phase'); }
 async function saveEditPhase(){ const name=document.getElementById('edit-phase-name').value.trim(); if(!name) return; try { await sbFetch('PATCH','phases',{name},`id=eq.${editingPhaseId}`); phases.find(p=>p.id===editingPhaseId).name=name; closeModal('edit-phase'); render(); showToast('Fase hernoemd'); } catch(e){ showToast('Fout: '+e.message,true); } }
 function openDeletePhase(id){ deletingPhaseId=id; document.getElementById('del-phase-label').textContent=phases.find(p=>p.id===id).name; openModal('delete-phase'); }
-async function confirmDeletePhase(){ try { const fb=backlogs[0]; const pp=projects.filter(p=>p.phase_id===deletingPhaseId); await Promise.all(pp.map(p=>sbFetch('PATCH','projects',{phase_id:null,employee_id:null,backlog_id:fb?fb.id:null},`id=eq.${p.id}`))); pp.forEach(p=>{ p.phase_id=null; p.employee_id=null; p.backlog_id=fb?fb.id:null; }); await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`,{method:'DELETE',headers:hdrs}); phases=phases.filter(p=>p.id!==deletingPhaseId); closeModal('delete-phase'); render(); showToast('Fase verwijderd'); } catch(e){ showToast('Fout: '+e.message,true); } }
+async function confirmDeletePhase(){
+  try {
+    const fb=backlogs[0];
+    const pp=projects.filter(p=>p.phase_id===deletingPhaseId);
+
+    await Promise.all(pp.map(p=>
+      sbFetch('PATCH','projects',{
+        phase_id:null,
+        employee_id:null,
+        backlog_id:fb?fb.id:null
+      },`id=eq.${p.id}`)
+    ));
+
+    pp.forEach(p=>{
+      p.phase_id=null;
+      p.employee_id=null;
+      p.backlog_id=fb?fb.id:null;
+    });
+
+    await fetch(`${SUPABASE_URL}/rest/v1/phases?id=eq.${deletingPhaseId}`,{
+      method:'DELETE',
+      headers:hdrs
+    });
+
+    phases=phases.filter(p=>p.id!==deletingPhaseId);
+
+    // Nummering en positie opnieuw aansluiten
+    await Promise.all(phases.map((ph,index)=>
+      sbFetch('PATCH','phases',{position:index+1},`id=eq.${ph.id}`)
+    ));
+    phases.forEach((ph,index)=>ph.position=index+1);
+
+    closeModal('delete-phase');
+    render();
+    showToast('Fase verwijderd');
+  } catch(e){ showToast('Fout: '+e.message,true); }
+}
 
 // Backlogs
 function openEditBacklog(id){ editingBacklogId=id; document.getElementById('edit-backlog-name').value=backlogs.find(b=>b.id===id).name; openModal('edit-backlog'); }
