@@ -187,6 +187,36 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .stats-section { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
 .stats-header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); }
 .stats-body { display: grid; grid-template-columns: repeat(4, 1fr) 1.6fr; }
+.employee-project-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.employee-project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.employee-project-name {
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-project-number {
+  flex: 0 0 auto;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--accent);
+}
+
 .stat-card { padding: 20px 24px; border-right: 1px solid var(--border); }
 .stat-card:last-child { border-right: none; }
 .stat-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
@@ -338,12 +368,15 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
   </div>
 
   <div class="stats-section">
-    <div class="stats-header">📊 Statistieken</div>
-    <div class="stats-body">
-      <div class="stat-card"><div class="stat-label">Totaal</div><div class="stat-value" id="s-total">–</div><div class="stat-sub">actieve projecten</div></div>
-      <div class="stat-card"><div class="stat-label">In backlog</div><div class="stat-value" id="s-backlog">–</div><div class="stat-sub">niet toegewezen</div></div>
-      <div class="stat-card"><div class="stat-label">Actief</div><div class="stat-value" id="s-active">–</div><div class="stat-sub">in een fase</div></div>
-      <div class="stat-card"><div class="stat-label">Hoge prioriteit</div><div class="stat-value" id="s-urgent">–</div><div class="stat-sub">gemarkeerd urgent</div></div>
+        <div class="stats-body">
+      <div class="stat-card"><div class="stat-label">Verlopen deadlines</div><div class="stat-value" id="s-overdue">–</div><div class="stat-sub">directe aandacht nodig</div></div>
+      <div class="stat-card"><div class="stat-label">Deze week klaar</div><div class="stat-value" id="s-this-week">–</div><div class="stat-sub">deadline deze week</div></div>
+      <div class="stat-card employee-projects-card">
+        <div class="stat-label">Projecten per medewerker</div>
+        <div class="employee-project-counts" id="s-employee-projects"></div>
+        <div class="stat-sub">projecten in een actieve fase</div>
+      </div>
+      <div class="stat-card"><div class="stat-label">Hoge prioriteit</div><div class="stat-value" id="s-urgent">–</div><div class="stat-sub">actieve projecten</div></div>
       <div class="stat-card"><div class="stat-label">Aankomende deadlines</div><div class="deadline-list" id="deadline-list"></div></div>
     </div>
   </div>
@@ -701,45 +734,64 @@ function render() {
   }
 
   // stats
+  const visibleProjects = projects.filter(p => {
+    if (p.completed) return false;
 
-  // Projecten die daadwerkelijk in een bestaande backlog staan
-  const inBl = projects.filter(p =>
-    !p.completed &&
-    !p.phase_id &&
-    p.backlog_id &&
-    backlogs.some(bl => bl.id === p.backlog_id)
+    const inExistingBacklog =
+      !p.phase_id &&
+      p.backlog_id &&
+      backlogs.some(bl => bl.id === p.backlog_id);
+
+    const inExistingPhase =
+      p.phase_id &&
+      phases.some(ph => ph.id === p.phase_id);
+
+    return inExistingBacklog || inExistingPhase;
+  });
+
+  // 1. Projecten met een verlopen deadline
+  const overdueProjects = visibleProjects.filter(p =>
+    p.deadline && deadlineDiff(p.deadline) < 0
   ).length;
 
-  // Projecten die daadwerkelijk in een bestaande fase staan
-  const activeInPhase = projects.filter(p =>
-    !p.completed &&
-    p.phase_id &&
-    phases.some(ph => ph.id === p.phase_id)
+  // 2. Projecten met een deadline deze week
+  const thisWeekProjects = visibleProjects.filter(p => {
+    if (!p.deadline) return false;
+    const diff = deadlineDiff(p.deadline);
+    return diff >= 0 && diff <= 7;
+  }).length;
+
+  // 3. Aantal projecten per medewerker in een actieve fase
+  const projectsPerEmployee = employees.map(employee => {
+    const count = visibleProjects.filter(p =>
+      p.employee_id === employee.id &&
+      p.phase_id &&
+      phases.some(ph => ph.id === p.phase_id)
+    ).length;
+
+    return {
+      name: employee.name,
+      count
+    };
+  });
+
+  document.getElementById('s-employee-projects').innerHTML =
+    projectsPerEmployee.length
+      ? projectsPerEmployee.map(employee => `
+          <div class="employee-project-row">
+            <span class="employee-project-name">${employee.name}</span>
+            <span class="employee-project-number">${employee.count}</span>
+          </div>
+        `).join('')
+      : '<span class="deadline-empty">Geen medewerkers ingesteld</span>';
+
+  // 4. Projecten met hoge prioriteit
+  const urgentProjects = visibleProjects.filter(p =>
+    p.priority === 'hoog'
   ).length;
 
-  // Totaal = alleen projecten die daadwerkelijk zichtbaar zijn in een backlog of fase
-  const totalProjects = inBl + activeInPhase;
-
-  // Hoge prioriteit binnen de zichtbare projecten
-  const urgentProjects = projects.filter(p =>
-    !p.completed &&
-    p.priority === 'hoog' &&
-    (
-      (
-        !p.phase_id &&
-        p.backlog_id &&
-        backlogs.some(bl => bl.id === p.backlog_id)
-      ) ||
-      (
-        p.phase_id &&
-        phases.some(ph => ph.id === p.phase_id)
-      )
-    )
-  ).length;
-
-  document.getElementById('s-total').textContent = totalProjects;
-  document.getElementById('s-backlog').textContent = inBl;
-  document.getElementById('s-active').textContent = activeInPhase;
+  document.getElementById('s-overdue').textContent = overdueProjects;
+  document.getElementById('s-this-week').textContent = thisWeekProjects;
   document.getElementById('s-urgent').textContent = urgentProjects;
 
   const withDl=activeProjects.filter(p=>p.deadline)
