@@ -689,8 +689,8 @@ function render() {
   }
 
   // stats
-  const totalActiveProjects = projects.filter(p => !p.completed).length;
 
+  // Projecten die daadwerkelijk in een bestaande backlog staan
   const inBl = projects.filter(p =>
     !p.completed &&
     !p.phase_id &&
@@ -698,17 +698,34 @@ function render() {
     backlogs.some(bl => bl.id === p.backlog_id)
   ).length;
 
+  // Projecten die daadwerkelijk in een bestaande fase staan
   const activeInPhase = projects.filter(p =>
     !p.completed &&
-    p.phase_id
+    p.phase_id &&
+    phases.some(ph => ph.id === p.phase_id)
   ).length;
 
+  // Totaal = alleen projecten die daadwerkelijk zichtbaar zijn in een backlog of fase
+  const totalProjects = inBl + activeInPhase;
+
+  // Hoge prioriteit binnen de zichtbare projecten
   const urgentProjects = projects.filter(p =>
     !p.completed &&
-    p.priority === 'hoog'
+    p.priority === 'hoog' &&
+    (
+      (
+        !p.phase_id &&
+        p.backlog_id &&
+        backlogs.some(bl => bl.id === p.backlog_id)
+      ) ||
+      (
+        p.phase_id &&
+        phases.some(ph => ph.id === p.phase_id)
+      )
+    )
   ).length;
 
-  document.getElementById('s-total').textContent = totalActiveProjects;
+  document.getElementById('s-total').textContent = totalProjects;
   document.getElementById('s-backlog').textContent = inBl;
   document.getElementById('s-active').textContent = activeInPhase;
   document.getElementById('s-urgent').textContent = urgentProjects;
