@@ -212,8 +212,11 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 .completed-card-top { display: flex; align-items: center; gap: 8px; }
 .completed-card-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--text); }
 .completed-card-date { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--green); font-weight: 600; flex-shrink: 0; }
-.completed-card-reopen { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text3); padding: 0 2px; }
-.completed-card:hover .completed-card-reopen { visibility: visible; }
+.completed-card-reopen { visibility: hidden; background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text3); padding: 3px 6px; border-radius: 4px; }
+.completed-card-delete { visibility: hidden; background: var(--red); color: #fff; border: 1px solid var(--red); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 8px; border-radius: var(--radius-sm); }
+.completed-card:hover .completed-card-reopen, .completed-card:hover .completed-card-delete { visibility: visible; }
+.completed-card-reopen:hover { background: var(--border); color: var(--text); }
+.completed-card-delete:hover { background: #991b1b; border-color: #991b1b; }
 .completed-card-note { font-size: 11px; color: var(--text2); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 2px; }
 
 /* ── Loading ── */
@@ -529,7 +532,12 @@ function initials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().sl
 function phaseColor(i){ return PHASE_COLORS[i%PHASE_COLORS.length]; }
 function avaColor(i){ return AVA_COLORS[i%AVA_COLORS.length]; }
 function isActive(p){ return !p.completed; }
-function inBacklog(p){ return !p.phase_id && !p.completed; }
+function inBacklog(p){
+  return !p.completed &&
+         !p.phase_id &&
+         !!p.backlog_id &&
+         backlogs.some(bl=>bl.id===p.backlog_id);
+}
 
 function deadlineDiff(d) {
   if(!d) return null;
@@ -681,11 +689,29 @@ function render() {
   }
 
   // stats
-  const inBl=activeProjects.filter(inBacklog).length;
-  document.getElementById('s-total').textContent=activeProjects.length;
-  document.getElementById('s-backlog').textContent=inBl;
-  document.getElementById('s-active').textContent=activeProjects.length-inBl;
-  document.getElementById('s-urgent').textContent=activeProjects.filter(p=>p.priority==='hoog').length;
+  const totalActiveProjects = projects.filter(p => !p.completed).length;
+
+  const inBl = projects.filter(p =>
+    !p.completed &&
+    !p.phase_id &&
+    p.backlog_id &&
+    backlogs.some(bl => bl.id === p.backlog_id)
+  ).length;
+
+  const activeInPhase = projects.filter(p =>
+    !p.completed &&
+    p.phase_id
+  ).length;
+
+  const urgentProjects = projects.filter(p =>
+    !p.completed &&
+    p.priority === 'hoog'
+  ).length;
+
+  document.getElementById('s-total').textContent = totalActiveProjects;
+  document.getElementById('s-backlog').textContent = inBl;
+  document.getElementById('s-active').textContent = activeInPhase;
+  document.getElementById('s-urgent').textContent = urgentProjects;
 
   const withDl=activeProjects.filter(p=>p.deadline)
     .map(p=>({...p,diff:deadlineDiff(p.deadline)}))
@@ -733,6 +759,7 @@ function render() {
                 <span class="completed-card-name">${p.name}</span>
                 <span class="completed-card-date">${dateStr}</span>
                 <button class="completed-card-reopen" onclick="event.stopPropagation();openReopen('${p.id}')" title="Heropenen">↩</button>
+                <button class="completed-card-delete" onclick="event.stopPropagation();deleteCompletedProject('${p.id}')" title="Project definitief verwijderen">🗑 Verwijderen</button>
               </div>
               ${p.note?`<div class="completed-card-note">${p.note}</div>`:''}
             </div>`;
@@ -860,6 +887,22 @@ async function deleteProject(id){
   } catch(e){ showToast('Fout: '+e.message,true); }
 }
 async function deleteProjectFromModal(){ closeModal('edit-project'); await deleteProject(editingProjectId); }
+
+async function deleteCompletedProject(id){
+  const project=projects.find(p=>p.id===id);
+  if(!project) return;
+
+  if(!confirm(`Weet je zeker dat je "${project.name}" definitief wilt verwijderen?`)) return;
+
+  try {
+    await sbFetch('DELETE','projects',null,`id=eq.${id}`);
+    projects=projects.filter(p=>p.id!==id);
+    render();
+    showToast('Afgerond project verwijderd');
+  } catch(e){
+    showToast('Fout bij verwijderen: '+e.message,true);
+  }
+}
 
 // Complete
 function openComplete(id){
