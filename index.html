@@ -398,6 +398,11 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 
   <div class="stats-section">
         <div class="stats-body">
+      <div class="stat-card employee-projects-card">
+        <div class="stat-label">Projectstatus</div>
+        <div class="employee-project-counts" id="s-project-status"></div>
+        <div class="stat-sub">verdeling van alle projecten</div>
+      </div>
       <div class="stat-card"><div class="stat-label">Verlopen deadlines</div><div class="stat-value" id="s-overdue">–</div><div class="stat-sub">directe aandacht nodig</div></div>
       <div class="stat-card"><div class="stat-label">Deze week klaar</div><div class="stat-value" id="s-this-week">–</div><div class="stat-sub">deadline deze week</div></div>
       <div class="stat-card employee-projects-card">
@@ -405,7 +410,6 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
         <div class="employee-project-counts" id="s-employee-projects"></div>
         <div class="stat-sub">projecten in een actieve fase</div>
       </div>
-      <div class="stat-card"><div class="stat-label">Hoge prioriteit</div><div class="stat-value" id="s-urgent">–</div><div class="stat-sub">actieve projecten</div></div>
       <div class="stat-card"><div class="stat-label">Aankomende deadlines</div><div class="deadline-list" id="deadline-list"></div></div>
     </div>
   </div>
@@ -778,19 +782,50 @@ function render() {
     return inExistingBacklog || inExistingPhase;
   });
 
-  // 1. Projecten met een verlopen deadline
+  // 1. Verdeling van projecten over backlog, actieve fase en afgerond
+  const backlogProjectCount = projects.filter(p =>
+    !p.completed &&
+    !p.phase_id &&
+    p.backlog_id &&
+    backlogs.some(bl => bl.id === p.backlog_id)
+  ).length;
+
+  const activePhaseProjectCount = projects.filter(p =>
+    !p.completed &&
+    p.phase_id &&
+    phases.some(ph => ph.id === p.phase_id)
+  ).length;
+
+  const completedProjectCount = projects.filter(p => p.completed).length;
+
+  document.getElementById('s-project-status').innerHTML = `
+    <div class="employee-project-row">
+      <span class="employee-project-name">Backlog</span>
+      <span class="employee-project-number">${backlogProjectCount}</span>
+    </div>
+    <div class="employee-project-row">
+      <span class="employee-project-name">Actieve fase</span>
+      <span class="employee-project-number">${activePhaseProjectCount}</span>
+    </div>
+    <div class="employee-project-row">
+      <span class="employee-project-name">Afgerond</span>
+      <span class="employee-project-number">${completedProjectCount}</span>
+    </div>
+  `;
+
+  // 2. Projecten met een verlopen deadline
   const overdueProjects = visibleProjects.filter(p =>
     p.deadline && deadlineDiff(p.deadline) < 0
   ).length;
 
-  // 2. Projecten met een deadline deze week
+  // 3. Projecten met een deadline deze week
   const thisWeekProjects = visibleProjects.filter(p => {
     if (!p.deadline) return false;
     const diff = deadlineDiff(p.deadline);
     return diff >= 0 && diff <= 7;
   }).length;
 
-  // 3. Aantal projecten per medewerker in een actieve fase
+  // 4. Aantal projecten per medewerker in een actieve fase
   const projectsPerEmployee = employees.map(employee => {
     const count = visibleProjects.filter(p =>
       p.employee_id === employee.id &&
@@ -814,14 +849,8 @@ function render() {
         `).join('')
       : '<span class="deadline-empty">Geen medewerkers ingesteld</span>';
 
-  // 4. Projecten met hoge prioriteit
-  const urgentProjects = visibleProjects.filter(p =>
-    p.priority === 'hoog'
-  ).length;
-
   document.getElementById('s-overdue').textContent = overdueProjects;
   document.getElementById('s-this-week').textContent = thisWeekProjects;
-  document.getElementById('s-urgent').textContent = urgentProjects;
 
   const withDl=activeProjects.filter(p=>p.deadline)
     .map(p=>({...p,diff:deadlineDiff(p.deadline)}))
