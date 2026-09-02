@@ -113,8 +113,48 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .avatar-xs { width: 18px; height: 18px; border-radius: 50%; font-size: 9px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 /* ── Backlogs ── */
-.backlogs-row { display: grid; gap: 12px; }
-.backlog-col { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+/* Twee rijen met veel bredere backlog-kolommen.
+   Elke backlog heeft minimaal 280px breedte. Bij veel backlogs loopt de rij
+   horizontaal door, waardoor er ongeveer 8–10 kolommen zichtbaar kunnen zijn
+   afhankelijk van de schermbreedte. */
+.backlogs-row {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, 1fr);
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  align-items: start;
+}
+
+.backlog-col {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+}
+
+/* De knop voor een nieuwe backlog blijft dezelfde breedte als de andere kolommen */
+.add-backlog-col {
+  min-width: 280px;
+}
+
+/* Op kleinere schermen blijven de backlogs leesbaar en kan horizontaal gescrold worden */
+@media (max-width: 900px) {
+  .backlogs-row {
+    grid-auto-columns: minmax(240px, 1fr);
+  }
+
+  .backlog-col,
+  .add-backlog-col {
+    min-width: 240px;
+  }
+}
 .backlog-col-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2); }
 .backlog-col-header[draggable="true"] { cursor: grab; user-select: none; }
 .backlog-col-header[draggable="true"]:active { cursor: grabbing; }
@@ -346,17 +386,6 @@ tbody td:first-child { position: sticky; left: 0; z-index: 3; background: var(--
 </header>
 
 <main class="main">
-  <div class="toolbar">
-    <div class="toolbar-left">
-      <h1 class="page-title">Projecten</h1>
-      <div class="chips">
-        <div class="stat-chip"><span id="chip-projects">–</span> projecten</div>
-        <div class="stat-chip"><span id="chip-employees">–</span> medewerkers</div>
-        <div class="stat-chip"><span id="chip-phases">–</span> fases</div>
-      </div>
-    </div>
-  </div>
-
   <div class="filter-bar" id="filter-bar"></div>
   <div class="backlogs-row" id="backlogs-row"></div>
 
