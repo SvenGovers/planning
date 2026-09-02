@@ -924,15 +924,71 @@ function applyFilters(){ searchQuery=document.getElementById('search-input').val
 function clearSearch(){ document.getElementById('search-input').value=''; searchQuery=''; render(); }
 
 // ── Drag & drop ──
+let projectDragScrollY = null;
+let projectDragScrollFrame = null;
+
+function cleanupProjectDrag(){
+  document.querySelectorAll('.project-card.dragging').forEach(el=>el.classList.remove('dragging'));
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  dragId=null;
+  projectDragScrollY=null;
+  if(projectDragScrollFrame){
+    cancelAnimationFrame(projectDragScrollFrame);
+    projectDragScrollFrame=null;
+  }
+}
+
+function projectDragAutoScroll(){
+  if(!dragId || projectDragScrollY===null){
+    projectDragScrollFrame=null;
+    return;
+  }
+
+  const edge=120;
+  const maxSpeed=22;
+  const y=projectDragScrollY;
+  const height=window.innerHeight;
+  let speed=0;
+
+  if(y<edge){
+    speed=-maxSpeed*(1-y/edge);
+  }else if(y>height-edge){
+    speed=maxSpeed*((y-(height-edge))/edge);
+  }
+
+  if(Math.abs(speed)>0.5) window.scrollBy(0,speed);
+  projectDragScrollFrame=requestAnimationFrame(projectDragAutoScroll);
+}
+
 function onDragStart(e,id){
   dragId=id;
+  projectDragScrollY=e.clientY;
   setTimeout(()=>{ const el=document.getElementById('card-'+id); if(el) el.classList.add('dragging'); },0);
   e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',id);
+
+  if(!projectDragScrollFrame){
+    projectDragScrollFrame=requestAnimationFrame(projectDragAutoScroll);
+  }
 }
+
 function onDragEnd(){
-  if(dragId){ const el=document.getElementById('card-'+dragId); if(el) el.classList.remove('dragging'); }
-  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  cleanupProjectDrag();
 }
+
+// Houd de muispositie bij tijdens slepen. Dicht bij de boven- of onderkant
+// scrollt de pagina automatisch mee.
+document.addEventListener('dragover',e=>{
+  if(!dragId) return;
+  projectDragScrollY=e.clientY;
+},true);
+
+// Laat het muiswiel tijdens het slepen van een project de pagina gewoon bedienen.
+window.addEventListener('wheel',e=>{
+  if(!dragId) return;
+  e.preventDefault();
+  window.scrollBy({top:e.deltaY,left:0,behavior:'auto'});
+},{passive:false,capture:true});
 function clearBacklogDragStyles(){
   document.querySelectorAll('.backlog-col').forEach(el=>{
     el.classList.remove('dragging-backlog','backlog-drop-target');
@@ -1013,22 +1069,43 @@ function onDragLeave(e){
   if(!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('drag-over');
 }
 async function onDrop(e,phaseId,empId,backlogId){
-  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
-  if(!dragId) return;
-  const proj=projects.find(p=>p.id===dragId);
-  if(!proj||proj.completed){ dragId=null; return; }
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+
+  const movedProjectId=dragId;
+  if(!movedProjectId){
+    cleanupProjectDrag();
+    return;
+  }
+
+  const proj=projects.find(p=>p.id===movedProjectId);
+  if(!proj||proj.completed){
+    cleanupProjectDrag();
+    return;
+  }
+
   const nP=phaseId||null, nE=empId||null, nB=backlogId||null;
-  if(proj.phase_id===nP&&proj.employee_id===nE&&proj.backlog_id===nB){ dragId=null; return; }
+  if(proj.phase_id===nP&&proj.employee_id===nE&&proj.backlog_id===nB){
+    cleanupProjectDrag();
+    return;
+  }
+
   const oldPhaseId=proj.phase_id;
-  proj.phase_id=nP; proj.employee_id=nE; proj.backlog_id=nB;
+  proj.phase_id=nP;
+  proj.employee_id=nE;
+  proj.backlog_id=nB;
+
+  // Meteen alle drag-markering opruimen voordat het bord opnieuw wordt gerenderd.
+  cleanupProjectDrag();
   render();
+
   try {
-    await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${dragId}`);
+    await sbFetch('PATCH','projects',{phase_id:nP,employee_id:nE,backlog_id:nB},`id=eq.${movedProjectId}`);
     if(nP && nP!==oldPhaseId) {
       const ph=phases.find(p=>p.id===nP);
       const emp=employees.find(e=>e.id===nE);
       await sbFetch('POST','project_history',{
-        project_id:dragId, phase_id:nP,
+        project_id:movedProjectId, phase_id:nP,
         phase_name:ph?ph.name:'Onbekend',
         employee_id:nE||null,
         employee_name:emp?emp.name:null,
@@ -1036,8 +1113,10 @@ async function onDrop(e,phaseId,empId,backlogId){
       });
     }
     showToast(nP?'Project verplaatst':'Terug naar backlog');
-  } catch(err){ showToast('Opslaan mislukt: '+err.message,true); loadAll(); }
-  dragId=null;
+  } catch(err){
+    showToast('Opslaan mislukt: '+err.message,true);
+    loadAll();
+  }
 }
 
 // ── Modals ──
